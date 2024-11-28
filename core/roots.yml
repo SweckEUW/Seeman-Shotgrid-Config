@@ -31,17 +31,17 @@
 # One of the roots defined in this file should have a `default` key with a value
 # of `true` to identify the default storage root to use when none is specified
 # for a path template. If no roots are identified a `default`, then one root
-# must be named `primary` which will indicate the default root.
+# must be named `Seemann_at` which will indicate the default root.
 #
 # During setup, the paths defined for each local storage are transferred across
 # to this file.
 #
 # Note: In toolkit core versions prior to 0.18.121, configurations using a
-# single root required this root to be named 'primary'. In later versions of
+# single root required this root to be named 'Seemann_at'. In later versions of
 # core, this requirement has been lifted and the root can be named anything.
 # ------------------------------------------------------------------------------
 
-primary:
+Seemann_at:
 
     description: A top-level root folder for production data. Project folders
         will be created beneath this location.
@@ -51,7 +51,7 @@ primary:
     mac_path:
     linux_path:
     shotgun_storage_id: 3
-    windows_path: C:\Users\Simon Weck\Desktop
+    windows_path: X:\Projekte
 
     # indicates that this is the default storage root
     default: true
