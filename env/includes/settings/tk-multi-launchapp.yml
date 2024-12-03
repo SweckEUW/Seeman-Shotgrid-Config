@@ -74,15 +74,37 @@ settings.tk-multi-launchapp.motionbuilder:
 #   icon: "{target_engine}/icon_256.png"
 #   windows_path: "@path.windows.maya"
 #   linux_path: "@path.linux.maya"
-#   menu_name: Maya 2022.3
+#   menu_name: Maya {version}
 #   location: "@apps.tk-multi-launchapp.location"
-#   group: Maya 2022.3
-#   versions: ["2022"]
+#   group: Maya
+#   versions: ["2024"]
 #   display_name: "Launch Maya {version}"
 #   description: "Launch Maya and initialize the ShotGrid Pipeline Toolkit."
 #   hook_before_app_launch: "{config}/tk-multi-launchapp/before_app_launch.py"
-  # hook_before_register_command: "{config}/tk-multi-launchapp/before_register_command.py"
 
+# settings.tk-multi-launchapp.houdini:
+#   engine: tk-houdini
+#   icon: "{target_engine}/icon_256.png"
+#   windows_path: "@path.windows.houdini"
+#   linux_path: "@path.linux.houdini"
+#   menu_name: Houdini {version}
+#   location: "@apps.tk-multi-launchapp.location"
+#   group: Houdini
+#   versions: ["20.5.278"]
+#   hook_before_app_launch: "{config}/tk-multi-launchapp/before_app_launch.py"
+
+# settings.tk-multi-launchapp.blender:
+#   engine: tk-blender
+#   icon: "{target_engine}/icon_256.png"
+#   windows_path: "@path.windows.blender"
+#   linux_path: "@path.linux.blender"
+#   menu_name: Blender {version}
+#   location: "@apps.tk-multi-launchapp.location"
+#   group: Blender
+#   versions: ["4.3", "4.1"]
+#   hook_before_app_launch: "{config}/tk-multi-launchapp/before_app_launch.py"
+
+# TODO: NUKE
 # settings.tk-multi-launchapp.nuke:
 #   engine: tk-nuke
 #   icon: "{target_engine}/icon_256.png"
@@ -97,13 +119,17 @@ settings.tk-multi-launchapp.motionbuilder:
 #   description: "Launch NukeX and initialize the ShotGrid Pipeline Toolkit."
 #   hook_before_app_launch: "{config}/tk-multi-launchapp/before_app_launch.py"
 
-settings.tk-multi-launchapp.houdini:
-  engine: tk-houdini
-  icon: "{target_engine}/icon_256.png"
-  windows_path: "@path.windows.houdini"
-  linux_path: "@path.linux.houdini"
-  menu_name: Houdingi {version}
-  location: "@apps.tk-multi-launchapp.location"
-  group: Houdingi 20.5.278
-  versions: ["20.5.278"]
-  hook_before_app_launch: "{config}/tk-multi-launchapp/before_app_launch.py"
+# TODO: SUBSTANCE
+# settings.tk-multi-launchapp.nuke:
+#   engine: tk-nuke
+#   icon: "{target_engine}/icon_256.png"
+#   windows_args: '--nukex'
+#   windows_path: "@path.windows.nuke"
+#   linux_path: "@path.linux.nuke"
+#   menu_name: NukeX {version}
+#   location: "@apps.tk-multi-launchapp.location"
+#   group: NukeX 13.2v1
+#   versions: ["(13.2)v1"]
+#   display_name: "Launch NukeX {v0}"
+#   description: "Launch NukeX and initialize the ShotGrid Pipeline Toolkit."
+#   hook_before_app_launch: "{config}/tk-multi-launchapp/before_app_launch.py"

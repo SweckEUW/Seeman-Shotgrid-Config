@@ -46,3 +46,8 @@ path.windows.nuke: C:\Program Files\Nuke{version}\Nuke{v0}.exe
 path.linux.houdini: /opt/hfs{version}/bin/houdinifx
 path.mac.houdini: ""
 path.windows.houdini: C:\Program Files\Side Effects Software\Houdini {version}\bin\houdinifx.exe
+
+# # Blender
+# path.linux.blender: /usr/bin/blender
+# path.mac.blender: /Applications/Blender.app
+# path.windows.blender: C:\Program Files\Blender Foundation\Blender {version}\blender.exe
