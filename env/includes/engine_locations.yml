@@ -73,17 +73,11 @@ engines.tk-vred.location:
   type: app_store
   name: tk-vred
   version: v3.4.1
-# engines.tk-blender.location:
-#   type: git
-#   branch: master
-#   path: https://github.com/diegogarciahuerta/tk-blender.git
-#   version: v1.1.1
 engines.tk-blender.location:
-  type: path
-  path: G:\Meine Ablage\Daten\Uni\TH OWL\Semester 3\Medienprojekt - Seemann\Shotgrid\tk-blender
-
+  type: git
+  branch: master
+  path: https://github.com/SweckEUW/tk-blender
+  version: v2.0.0
 # engines.tk-blender.location:
-#   type: git
-#   branch: master
-#   path: https://github.com/icentric-dev/tk-blender.git
-#   version: v2.0.0
+#   type: path
+#   path: "G:/Meine Ablage/Daten/Uni/TH OWL/Semester 3/Medienprojekt - Seemann/Shotgrid/tk-blender"
