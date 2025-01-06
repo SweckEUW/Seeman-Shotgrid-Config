@@ -36,7 +36,7 @@ settings.tk-desktop.project:
     tk-multi-launchapp: "@settings.tk-multi-launchapp"
     # tk-multi-launchmaya: "@settings.tk-multi-launchapp.maya"
     # tk-multi-launchhoudini: "@settings.tk-multi-launchapp.houdini"
-    tk-multi-launchblender: "@settings.tk-multi-launchapp.blender"
+    # tk-multi-launchblender: "@settings.tk-multi-launchapp.blender"
     # tk-multi-launchnuke: "@settings.tk-multi-launchapp.nuke"
 
     tk-multi-publish2: "@settings.tk-multi-publish2.standalone"

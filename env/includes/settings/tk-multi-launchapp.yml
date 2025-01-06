@@ -93,16 +93,16 @@ settings.tk-multi-launchapp.motionbuilder:
 #   versions: ["20.5.278"]
 #   hook_before_app_launch: "{config}/tk-multi-launchapp/before_app_launch.py"
 
-settings.tk-multi-launchapp.blender:
-  engine: tk-blender
-  icon: "{target_engine}/icon_256.png"
-  windows_path: "@path.windows.blender"
-  linux_path: "@path.linux.blender"
-  menu_name: Blender {version}
-  location: "@apps.tk-multi-launchapp.location"
-  group: Blender
-  versions: ["4.3", "4.1"]
-  hook_before_app_launch: "{config}/tk-multi-launchapp/before_app_launch.py"
+# settings.tk-multi-launchapp.blender:
+#   engine: tk-blender
+#   icon: "{target_engine}/icon_256.png"
+#   windows_path: "@path.windows.blender"
+#   linux_path: "@path.linux.blender"
+#   menu_name: Blender {version}
+#   location: "@apps.tk-multi-launchapp.location"
+#   group: Blender
+#   versions: ["4.3", "4.1"]
+#   hook_before_app_launch: "{config}/tk-multi-launchapp/before_app_launch.py"
 
 # TODO: NUKE
 # settings.tk-multi-launchapp.nuke:
