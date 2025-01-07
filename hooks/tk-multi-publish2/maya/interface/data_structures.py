@@ -38,7 +38,7 @@ class PublisherType(Enum):
         AnimationPublisher.USD,
     )
     CAMERA = ("NFA_camera_publish", "camera", CameraPublisher, CameraPublisher.USD)
-    MODEL = ("NFA_model_publish", "model", ModelPublisher, ModelPublisher.ALEMBIC)
+    MODEL = ("NFA_model_publish", "model", ModelPublisher, ModelPublisher.FBX)
 
     def __init__(
         self,
