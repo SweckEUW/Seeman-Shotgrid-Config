@@ -8,7 +8,10 @@ import tank
 class BeforeAppLaunch(tank.Hook):
 
     def execute(self, app_path, app_args, version, engine_name, **kwargs):
-
+        	
+        print("Before App Launch Hook")
+        print("-----------------------")
+        
         if engine_name == "tk-houdini":          
             os.environ["HOUDINI_DISABLE_CONSOLE"] = "1"
             os.environ["HOUDINI_ANONYMOUS_STATISTICS"] = "0"
