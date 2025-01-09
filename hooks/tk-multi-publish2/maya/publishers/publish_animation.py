@@ -90,9 +90,7 @@ class MayaSessionAnimationPublisherPlugin(HookBaseClass):
 
         return True
 
-    def configure_item(
-        self, settings, item, publish_data: interface.data_structures.PublishData
-    ):
+    def configure_item(self, settings, item, publish_data: interface.data_structures.PublishData):
         """Uses the ShotGrid templates to construct the publish path, the path
         is then stored on the item so the base class can use it to register a publish.
 
@@ -105,19 +103,18 @@ class MayaSessionAnimationPublisherPlugin(HookBaseClass):
         normalized_file_path = sgtk.util.ShotgunPath.normalize(file_path)
 
         work_template = item.parent.properties.get("work_template")
-        publish_template = self.parent.get_template_by_name(
-            settings["Publish Template"].value
-        )
+        publish_template = self.parent.get_template_by_name(settings["Publish Template"].value)
         work_fields = work_template.get_fields(normalized_file_path)
         work_fields["publish_name"] = publish_data.name
         work_fields["publish_type"] = publish_data.publish_type.publish_type
-
-        if publish_data.publisher == interface.data_structures.AnimationPublisher.USD:
+        
+        # New!
+        item.properties["publish_type"] = publish_data.publish_type.publish_type
+        print("Reaching New Line")
+        
+        if (publish_data.publisher == interface.data_structures.AnimationPublisher.USD):
             work_fields["publish_extension"] = "usd"
-        if (
-            publish_data.publisher
-            == interface.data_structures.AnimationPublisher.ALEMBIC
-        ):
+        if (publish_data.publisher == interface.data_structures.AnimationPublisher.ALEMBIC):
             work_fields["publish_extension"] = "abc"
 
         publish_path = publish_template.apply_fields(work_fields)
@@ -134,25 +131,16 @@ class MayaSessionAnimationPublisherPlugin(HookBaseClass):
             settings: The stored settings for the plugin.
             item: The item that is being published.
         """
-        animation_publish_data = interface.maya_interfacing.get_publish_settings(
-            interface.data_structures.PublisherType.ANIMATION
-        )
+        animation_publish_data = interface.maya_interfacing.get_publish_settings(interface.data_structures.PublisherType.ANIMATION)
 
         for publish_data in animation_publish_data:
             self.configure_item(settings, item, publish_data)
             self.ensure_publish_folder_exists(item.properties["path"])
-            if (
-                publish_data.publisher
-                == interface.data_structures.AnimationPublisher.USD
-            ):
+
+            if (publish_data.publisher == interface.data_structures.AnimationPublisher.USD):
                 self.export_and_publish_animation_as_usd(publish_data, settings, item)
-            elif (
-                publish_data.publisher
-                == interface.data_structures.AnimationPublisher.ALEMBIC
-            ):
-                self.export_and_publish_animation_as_alembic(
-                    publish_data, settings, item
-                )
+            elif (publish_data.publisher == interface.data_structures.AnimationPublisher.ALEMBIC):
+                self.export_and_publish_animation_as_alembic(publish_data, settings, item)
 
     def ensure_publish_folder_exists(self, publish_path: str) -> None:
         """Ensures that the publish folder exists. If it doesn't, it will be created.
@@ -163,9 +151,7 @@ class MayaSessionAnimationPublisherPlugin(HookBaseClass):
         publish_folder = Path(publish_path).parent
         self.parent.ensure_folder_exists(str(publish_folder))
 
-    def export_and_publish_animation_as_usd(
-        self, publish_data: interface.data_structures.PublishData, settings, item
-    ) -> None:
+    def export_and_publish_animation_as_usd(self, publish_data: interface.data_structures.PublishData, settings, item) -> None:
         """Exports the animation as USD with a /Animation root prim.
         After that it calls the base class publish.
 
@@ -177,9 +163,7 @@ class MayaSessionAnimationPublisherPlugin(HookBaseClass):
         cmds.select(clear=True)
 
         if "*+*" in publish_data.selection:
-            raise ValueError(
-                "Cannot export multiple objects to USD at once. Please select one root object."
-            )
+            raise ValueError("Cannot export multiple objects to USD at once. Please select one root object.")
 
         cmds.select(publish_data.selection, replace=True)
         usd_command = (

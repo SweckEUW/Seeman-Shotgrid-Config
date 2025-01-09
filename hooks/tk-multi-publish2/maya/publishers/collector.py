@@ -228,9 +228,7 @@ class MayaSessionCollector(HookBaseClass):
         :param parent_item: Parent Item instance
         """
 
-        geo_item = parent_item.create_item(
-            "maya.session.animation", "Animation", "Animation Publishing"
-        )
+        geo_item = parent_item.create_item("maya.session.animation", "Animation", "Animation Publishing")
 
         icon_path = os.path.join(self.disk_location, os.pardir, "icons", "animation.png")
 
