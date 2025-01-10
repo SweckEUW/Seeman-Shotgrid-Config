@@ -8,16 +8,13 @@ import tank
 class BeforeAppLaunch(tank.Hook):
 
     def execute(self, app_path, app_args, version, engine_name, **kwargs):
-        	
-        print("Before App Launch Hook")
-        print("-----------------------")
         
         if engine_name == "tk-houdini":          
             os.environ["HOUDINI_DISABLE_CONSOLE"] = "1"
             os.environ["HOUDINI_ANONYMOUS_STATISTICS"] = "0"
             os.environ["HOUDINI_NO_START_PAGE_SPLASH"] = "1"
-            os.environ["HOUDINI_SPLASH_MESSAGE"] = "Houdini Seemann (AT)"
-            # os.environ["HOUDINI_SPLASH_FILE"] = "R:/00_pipeline/splashscreen/giphy.gif"
+            os.environ["HOUDINI_SPLASH_MESSAGE"] = "Seemann (AT)"
+            # os.environ["HOUDINI_SPLASH_FILE"] = "X:/Projekte/MedienprojektSeemann/00_pipeline/houdini/splash.jpg"
 
             # Random Splashscreen from splashscreen folder
             # tk = sgtk.platform.current_engine().sgtk
