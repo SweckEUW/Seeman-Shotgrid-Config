@@ -18,7 +18,7 @@ includes:
 
 # auto discover DCCs for launch
 settings.tk-multi-launchapp:
-  use_software_entity: true
+  use_software_entity: false
   hook_before_register_command: "{config}/tk-multi-launchapp/before_register_command.py"
   location: "@apps.tk-multi-launchapp.location"
   hook_before_app_launch: "{config}/tk-multi-launchapp/before_app_launch.py"
@@ -69,29 +69,23 @@ settings.tk-multi-launchapp.motionbuilder:
 # path we switch to manual mode tough. The advantage of then setting these properties locally
 # is that we get more control and don't for example have to upload an icon for each software.
 # for settable properties check: https://github.com/shotgunsoftware/tk-multi-launchapp/blob/master/info.yml
-# settings.tk-multi-launchapp.maya:
-#   engine: tk-maya
-#   icon: "{target_engine}/icon_256.png"
-#   windows_path: "@path.windows.maya"
-#   linux_path: "@path.linux.maya"
-#   menu_name: Maya {version}
-#   location: "@apps.tk-multi-launchapp.location"
-#   group: Maya
-#   versions: ["2024"]
-#   display_name: "Launch Maya {version}"
-#   description: "Launch Maya and initialize the ShotGrid Pipeline Toolkit."
-#   hook_before_app_launch: "{config}/tk-multi-launchapp/before_app_launch.py"
+settings.tk-multi-launchapp.maya:
+  engine: tk-maya
+  icon: "{target_engine}/icon_256.png"
+  windows_path: "@path.windows.maya"
+  menu_name: Maya {version}
+  location: "@apps.tk-multi-launchapp.location"
+  versions: ["2025"]
+  hook_before_app_launch: "{config}/tk-multi-launchapp/before_app_launch.py"
 
-# settings.tk-multi-launchapp.houdini:
-#   engine: tk-houdini
-#   icon: "{target_engine}/icon_256.png"
-#   windows_path: "@path.windows.houdini"
-#   linux_path: "@path.linux.houdini"
-#   menu_name: Houdini {version}
-#   location: "@apps.tk-multi-launchapp.location"
-#   group: Houdini
-#   versions: ["20.5.278"]
-#   hook_before_app_launch: "{config}/tk-multi-launchapp/before_app_launch.py"
+settings.tk-multi-launchapp.houdini:
+  engine: tk-houdini
+  icon: "{target_engine}/icon_256.png"
+  windows_path: "@path.windows.houdini"
+  menu_name: Houdingi {version}
+  location: "@apps.tk-multi-launchapp.location"
+  versions: ["20.5.278"]
+  hook_before_app_launch: "{config}/tk-multi-launchapp/before_app_launch.py"
 
 # settings.tk-multi-launchapp.blender:
 #   engine: tk-blender

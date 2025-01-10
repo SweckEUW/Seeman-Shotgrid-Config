@@ -31,3 +31,18 @@ path.windows.hiero: E:\Program Files\Nuke13.2v2\Nuke13.2.exe
 path.linux.rv: "rv"
 path.mac.rv: "/Applications/RV.app"
 path.windows.rv: C:\Program Files\Shotgun\RV-7.9.0\bin\rv.exe
+
+# Maya
+path.linux.maya: "/usr/autodesk/maya{version}/bin/maya{version}"
+path.mac.maya: ""
+path.windows.maya: C:\Program Files\Autodesk\Maya{version}\bin\maya.exe
+
+# Nuke
+path.linux.nuke: "Nuke{version}"
+path.mac.nuke: ""
+path.windows.nuke: C:\Program Files\Nuke{version}\Nuke{v0}.exe
+
+# Houdini
+path.linux.houdini: /opt/hfs{version}/bin/houdinifx
+path.mac.houdini: ""
+path.windows.houdini: C:\Program Files\Side Effects Software\Houdini {version}\bin\houdinifx.exe

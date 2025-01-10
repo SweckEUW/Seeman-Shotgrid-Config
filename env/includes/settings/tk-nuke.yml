@@ -97,9 +97,6 @@ settings.tk-nuke.asset_step:
   apps:
     tk-multi-about:
       location: "@apps.tk-multi-about.location"
-    tk-multi-breakdown:
-      display_name: "Legacy Breakdown"
-      location: "@apps.tk-multi-breakdown.location"
     tk-multi-breakdown2: "@settings.tk-multi-breakdown2.nuke"
     tk-multi-loader2: "@settings.tk-multi-loader2.nuke"
     tk-multi-publish2: "@settings.tk-multi-publish2.nuke.asset_step"
@@ -168,9 +165,6 @@ settings.tk-nuke.shot_step:
       location: "@apps.tk-multi-about.location"
     tk-multi-setframerange:
       location: "@apps.tk-multi-setframerange.location"
-    tk-multi-breakdown:
-      display_name: "Legacy Breakdown"
-      location: "@apps.tk-multi-breakdown.location"
     tk-multi-breakdown2: "@settings.tk-multi-breakdown2.nuke"
     tk-multi-loader2: "@settings.tk-multi-loader2.nuke"
     tk-multi-publish2: "@settings.tk-multi-publish2.nuke.shot_step"

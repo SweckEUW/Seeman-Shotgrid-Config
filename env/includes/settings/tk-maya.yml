@@ -44,9 +44,6 @@ settings.tk-maya.asset_step:
   apps:
     tk-multi-about:
       location: "@apps.tk-multi-about.location"
-    tk-multi-breakdown:
-      display_name: "Legacy Breakdown"
-      location: "@apps.tk-multi-breakdown.location"
     tk-multi-breakdown2: "@settings.tk-multi-breakdown2.maya"
     tk-multi-data-validation: "@settings.tk-multi-data-validation.maya.asset_step"
     tk-multi-loader2: "@settings.tk-multi-loader2.maya"
@@ -108,9 +105,6 @@ settings.tk-maya.shot_step:
       location: "@apps.tk-multi-about.location"
     tk-multi-setframerange:
       location: "@apps.tk-multi-setframerange.location"
-    tk-multi-breakdown:
-      display_name: "Legacy Breakdown"
-      location: "@apps.tk-multi-breakdown.location"
     tk-multi-breakdown2: "@settings.tk-multi-breakdown2.maya"
     tk-multi-data-validation: "@settings.tk-multi-data-validation.maya.shot_step"
     tk-multi-loader2: "@settings.tk-multi-loader2.maya"
