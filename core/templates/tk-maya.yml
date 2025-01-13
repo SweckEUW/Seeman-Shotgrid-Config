@@ -25,9 +25,8 @@ keys:
   maya_extension:
     type: str
     choices:
-      ma: Maya Ascii (.ma)
       mb: Maya Binary (.mb)
-    default: ma
+    default: mb
     alias: extension
 
 paths:

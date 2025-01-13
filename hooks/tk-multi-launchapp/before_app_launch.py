@@ -31,6 +31,6 @@ class BeforeAppLaunch(tank.Hook):
         #     tank.util.append_path_to_env_var("NUKE_PATH", "R:/00_pipeline/shotgrid/config/hooks/nuke")
         #     tank.util.append_path_to_env_var("NUKE_PATH", "R:/00_pipeline/.nuke")
 
-        if engine_name == "tk-blender":
-            os.environ["SGTK_COMPATIBILITY_DIALOG_SHOWN"] = "1" #Fix Blender Errror when launching from Shotgun
-            os.environ["PYSIDE2_PYTHONPATH"] = "X:/Projekte/MedienprojektSeemann/Pipeline/PySide"
+        # if engine_name == "tk-blender":
+        #     os.environ["SGTK_COMPATIBILITY_DIALOG_SHOWN"] = "1" #Fix Blender Errror when launching from Shotgun
+        #     os.environ["PYSIDE2_PYTHONPATH"] = "X:/Projekte/MedienprojektSeemann/Pipeline/PySide"
