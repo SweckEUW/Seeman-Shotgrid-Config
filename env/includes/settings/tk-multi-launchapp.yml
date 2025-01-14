@@ -75,7 +75,7 @@ settings.tk-multi-launchapp.maya:
   windows_path: "@path.windows.maya"
   menu_name: Maya {version}
   location: "@apps.tk-multi-launchapp.location"
-  versions: ["2025"]
+  versions: ["2025", "2024"]
   hook_before_app_launch: "{config}/tk-multi-launchapp/before_app_launch.py"
 
 settings.tk-multi-launchapp.houdini:
