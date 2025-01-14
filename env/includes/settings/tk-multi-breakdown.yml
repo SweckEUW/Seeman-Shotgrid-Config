@@ -31,6 +31,6 @@ settings.tk-multi-breakdown.vred:
   location: "@apps.tk-multi-breakdown.location"
 
 # ---- Blender
-settings.tk-multi-breakdown.blender:
-  hook_scene_operations: '{engine}/tk-multi-breakdown/tk-blender_scene_operations.py'
-  location: "@apps.tk-multi-breakdown.location"
+# settings.tk-multi-breakdown.blender:
+#   hook_scene_operations: '{engine}/tk-multi-breakdown/tk-blender_scene_operations.py'
+#   location: "@apps.tk-multi-breakdown.location"

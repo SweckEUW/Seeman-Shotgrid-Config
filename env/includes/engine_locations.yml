@@ -104,11 +104,11 @@ engines.tk-vred.location:
   version: v3.4.1
 
 # Blender
-engines.tk-blender.location:
-  type: git
-  branch: master
-  path: https://github.com/SweckEUW/tk-blender
-  version: v2.0.0
+# engines.tk-blender.location:
+#   type: git
+#   branch: master
+#   path: https://github.com/SweckEUW/tk-blender
+#   version: v2.0.0
 # engines.tk-blender.location:
 #   type: path
 #   path: "G:/Meine Ablage/Daten/Uni/TH OWL/Semester 3/Medienprojekt - Seemann/Shotgrid/tk-blender"
