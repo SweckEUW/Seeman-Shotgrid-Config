@@ -40,7 +40,7 @@ path.windows.maya: C:\Program Files\Autodesk\Maya{version}\bin\maya.exe
 # Nuke
 path.linux.nuke: "Nuke{version}"
 path.mac.nuke: ""
-path.windows.nuke: C:\Program Files\Nuke{version}\Nuke{v0}.exe
+path.windows.nuke: C:\Program Files\Nuke15.1v5\Nuke15.1.exe
 
 # Houdini
 path.linux.houdini: /opt/hfs{version}/bin/houdinifx

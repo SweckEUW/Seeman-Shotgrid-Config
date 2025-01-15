@@ -1,0 +1,81 @@
+# Copyright (c) 2013 Shotgun Software Inc.
+#
+# CONFIDENTIAL AND PROPRIETARY
+#
+# This work is provided "AS IS" and subject to the Shotgun Pipeline Toolkit
+# Source Code License included in this distribution package. See LICENSE.
+# By accessing, using, copying or modifying this work you indicate your
+# agreement to the Shotgun Pipeline Toolkit Source Code License. All rights
+# not expressly granted therein are reserved by Shotgun Software Inc.
+
+display_name: "Review Submission 2"
+description: "Provides functionality to render media and submit to ShotGrid for review."
+
+configuration:
+    # --- STRINGS ---
+    company_name:
+        type: str
+        description: Specify the company name that should be on the slates
+        default_value: "ShotGrid Review Submission"
+    display_name:
+        type: str
+        description: Specify the name that should be used in menus and the main
+        default_value: "Review"
+        default_value_tk-maya: "Playblast"
+        default_value_tk-houdini: "Flipbook"
+    cut_in_field:
+        type: str
+        description: ShotGrid field name of cut in frame
+        default_value: "sg_cut_in"
+    cut_out_field:
+        type: str
+        description: ShotGrid field name of cut out frame
+        default_value: "sg_cut_out"
+    fps_field:
+        type: str
+        description: ShotGrid field name of fps
+        default_value: "sg_fps"
+
+    # --- PATHS ---
+    nuke_path_linux:
+        type: str
+        description: Linux path to your Nuke installation for creating slates.
+    nuke_path_mac:
+        type: str
+        description: Mac path to your Nuke installation for creating slates.
+    nuke_path_windows:
+        type: str
+        description: Windows path to your Nuke installation for creating slates.
+    slate_logo:
+        type: config_path
+        description: Relative app path to the logo displayed on the slate
+        default_value: "icons/review_submit_logo.png"
+
+    # --- TEMPLATES ---
+    work_file_template:
+        type: template
+        description: Template for your current work file.
+        fields: context, version, [name]
+        default_value: "@shot_root/review/{name}/{Shot}_{name}_sRGB_v{version}.mov"
+
+    review_file_template:
+        type: template
+        description: Template for the exported review file.
+        fields: version, *
+        default_value: "@asset_root/review/{name}/{Asset}_{name}_sRGB_v{version}.mov"
+
+    # --- HOOKS ---
+    helper_hook:
+        type: hook
+        description: Implements helper functions.
+        default_value: "{self}/helper.py:{self}/{engine_name}/helper.py"
+    progress_hook:
+        type: hook
+        description: Implements progress bar functions.
+        default_value: "{self}/progress.py:{self}/{engine_name}/progress.py"
+    render_media_hook:
+        type: hook
+        description: Implements how media get generated while this app is running.
+        default_value: "{self}/render_media.py:{self}/{engine_name}/render_media.py"
+
+supported_engines: [tk-houdini, tk-maya]
