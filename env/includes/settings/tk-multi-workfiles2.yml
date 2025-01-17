@@ -54,6 +54,8 @@ settings.tk-multi-workfiles2: &settings_tk-multi-workfiles2
 # launches at startup.
 settings.tk-multi-workfiles2.launch_at_startup:
   launch_at_startup: true
+  show_my_tasks: false
+  auto_expand_tree: true
   entities:
   - caption: Assets
     entity_type: Asset
@@ -246,6 +248,7 @@ settings.tk-multi-workfiles2.houdini:
 settings.tk-multi-workfiles2.houdini.launch_at_startup:
   launch_at_startup: true
   show_my_tasks: false
+  auto_expand_tree: true
   entities:
   - caption: Assets
     entity_type: Asset
