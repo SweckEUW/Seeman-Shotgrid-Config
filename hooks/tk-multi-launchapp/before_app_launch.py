@@ -15,6 +15,7 @@ class BeforeAppLaunch(tank.Hook):
             os.environ["HOUDINI_NO_START_PAGE_SPLASH"] = "1"
             os.environ["HOUDINI_SPLASH_MESSAGE"] = "Seemann (AT)"
             # os.environ["HOUDINI_SPLASH_FILE"] = "X:/Projekte/MedienprojektSeemann/00_pipeline/houdini/splash.jpg"
+            os.environ["HOUDINI_PATH"] += os.pathsep + "X:/Projekte/MedienprojektSeemann/00_pipeline/houdini"
 
             # Random Splashscreen from splashscreen folder
             # tk = sgtk.platform.current_engine().sgtk
