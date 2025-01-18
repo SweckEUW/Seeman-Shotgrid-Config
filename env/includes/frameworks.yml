@@ -19,7 +19,7 @@ frameworks:
     location:
       type: app_store
       name: tk-framework-adobe
-      version: v1.2.6
+      version: v1.2.7
 
   # adminui - provides GUIs for administrative commands
   tk-framework-adminui_v0.x.x:
@@ -54,7 +54,7 @@ frameworks:
     location:
       type: app_store
       name: tk-framework-qtwidgets
-      version: v2.12.4
+      version: v2.12.5
 
   # shotgunutils - Shotgun Related Utilities
   tk-framework-shotgunutils_v4.x.x:

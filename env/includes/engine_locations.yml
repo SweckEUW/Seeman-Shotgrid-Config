@@ -23,19 +23,19 @@ engines.tk-3dsmax.location:
 engines.tk-aftereffects.location:
   type: app_store
   name: tk-aftereffects
-  version: v0.4.4
+  version: v0.4.5
 
 # Alias 
 engines.tk-alias.location:
   type: app_store
   name: tk-alias
-  version: v4.1.1
+  version: v4.1.2
 
 # Desktop
 engines.tk-desktop.location:
   type: app_store
   name: tk-desktop
-  version: v2.7.6
+  version: v2.7.7
 
 # Desktop2
 engines.tk-desktop2.location:
@@ -83,7 +83,7 @@ engines.tk-nuke.location:
 engines.tk-photoshopcc.location:
   type: app_store
   name: tk-photoshopcc
-  version: v1.11.4
+  version: v1.11.5
 
 # Shell
 engines.tk-shell.location:
