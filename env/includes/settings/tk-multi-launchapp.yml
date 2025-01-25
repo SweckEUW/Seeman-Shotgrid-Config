@@ -84,7 +84,7 @@ settings.tk-multi-launchapp.houdini:
   windows_path: "@path.windows.houdini"
   menu_name: Houdingi {version}
   location: "@apps.tk-multi-launchapp.location"
-  versions: ["20.5.278"]
+  versions: ["20.5.278","20.0.724"]
   hook_before_app_launch: "{config}/tk-multi-launchapp/before_app_launch.py"
 
 # settings.tk-multi-launchapp.blender:
