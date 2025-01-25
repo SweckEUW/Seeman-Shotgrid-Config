@@ -18,8 +18,8 @@ jobs:
           zipBall: true
           token: "${{ github.token }}"
 
-    - name: Upload to ShotGrid
-      uses: fabiangeisler/github-shotgrid-upload-action@v1.0.2
+      - name: Upload to ShotGrid
+        uses: fabiangeisler/github-shotgrid-upload-action@v1.0.2
         with:
           upload_file: REPOSITORY-NAME-*.zip
           delete_file_after_upload: true
