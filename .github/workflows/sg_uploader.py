@@ -6,15 +6,12 @@ import glob
 import os
 import shotgun_api3
 
-
 def main(cli_args=None):
     """
     Upload a file to a ShotGrid entity field based on the given cli arguments.
 
     :param list[str]|None cli_args: The list of command line arguments.
     """
-
-    print("START ACTION")
 
     parser = argparse.ArgumentParser()
 
@@ -28,8 +25,6 @@ def main(cli_args=None):
                         help='The ShotGrid type of the entity.')
     parser.add_argument('-field', '--field_name', required=True,
                         help='The name of the entity field to upload to.')
-    parser.add_argument('-d', '--delete_file_after_upload', action='store_true', default=False,
-                        help='Whether the uploaded file should be removed from disk after upload.')
 
     args = parser.parse_args(cli_args)
 
@@ -53,11 +48,6 @@ def main(cli_args=None):
                               field_name=args.field_name)
 
     print('Upload successful. Created attachment with ID {}'.format(attachment_id))
-
-    if args.delete_file_after_upload:
-        print('Remove "{}" from disk.'.format(upload_file_path))
-        os.remove(upload_file_path)
-
 
 if __name__ == '__main__':
     main()
