@@ -1,0 +1,31 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    name: Publish release to ShotGrid
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download repo zip file
+        uses: robinraju/release-downloader@v1.4
+        with:
+          tag: "${{ github.ref_name }}"
+          zipBall: true
+          token: "${{ github.token }}"
+
+      - name: Upload to ShotGrid
+        uses: fabiangeisler/github-shotgrid-upload-action@v1
+        with:
+          upload_file: REPOSITORY-NAME-*.zip
+          delete_file_after_upload: true
+          entity_type: PipelineConfiguration
+          entity_id: 265
+          field_name: uploaded_config
+          shotgrid_base_url: ${{ secrets.SHOTGRID_BASE_URL }}
+          shotgrid_script_name: ${{ secrets.SHOTGRID_SCRIPT_NAME }}
+          shotgrid_api_key: ${{ secrets.SHOTGRID_API_KEY }}
