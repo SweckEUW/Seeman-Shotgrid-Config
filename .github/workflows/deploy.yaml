@@ -32,7 +32,7 @@ jobs:
           python -m pip install git+https://github.com/shotgunsoftware/python-api.git@v3.7.0
 
       - name: Upload file to ShotGrid
-        run: python ".github/workflows/sg_uploader.py" -type "PipelineConfiguration" -id 265 -field "uploaded_config" -i "Seeman-Shotgrid-Config-${{ github.sha }}.zip"
+        run: python ".github/workflows/sg_uploader.py" -type "PipelineConfiguration" -id 166 -field "uploaded_config" -i "Seeman-Shotgrid-Config-${{ github.sha }}.zip"
         shell: bash
         env:
           SHOTGRID_SITE: "${{ secrets.SHOTGRID_BASE_URL }}"
