@@ -25,7 +25,7 @@ settings.tk-multi-breakdown2.alias:
 
 # Houdini
 settings.tk-multi-breakdown2.houdini:
-  hook_scene_operations: '{self}/tk-houdini_scene_operations.py'
+  hook_scene_operations: '{config}/tk-multi-breakdown2/tk-houdini_scene_operations.py'
   location: "@apps.tk-multi-breakdown2.location"
 
 # Mari
