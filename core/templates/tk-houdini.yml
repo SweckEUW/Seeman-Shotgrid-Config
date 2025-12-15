@@ -72,6 +72,10 @@ paths:
   # File publish caches
   houdini_shot_publish_file_cache:
     definition: "@shot_publish/cache/bgeo/{name}/v{version}/sc{Sequence}_{Shot}_{Step}_pub_{name}_v{version}.{SEQ}.bgeo"
+  # USD
+  houdini_shot_usd_publish:
+    definition: "@shot_publish/usd/{name}/v{version}/sc{Sequence}_{Shot}_{Step}_pub_{name}_v{version}.usd"
+
 
   # Rendered images
   houdini_shot_render:
@@ -135,6 +139,9 @@ paths:
   # File publish caches
   houdini_asset_publish_file_cache:
     definition: "@asset_publish/cache/bgeo/{name}/v{version}/{Asset}_{Step}_pub_{name}_v{version}.{SEQ}.bgeo"
+  # USD
+  houdini_asset_usd_publish:
+    definition: "@asset_publish/usd/{name}/v{version}/{Asset}_{Step}_pub_{name}_v{version}.usd"
 
   # Rendered images
   houdini_asset_render:
