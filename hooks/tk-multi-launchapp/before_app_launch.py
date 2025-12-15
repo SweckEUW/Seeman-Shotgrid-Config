@@ -15,8 +15,8 @@ class BeforeAppLaunch(tank.Hook):
             os.environ["HOUDINI_EXTERNAL_HELP_BROWSER"] = "1" # Open Help in Browser fixes network service crash error
             os.environ["HOUDINI_NO_START_PAGE_SPLASH"] = "1"
             os.environ["HOUDINI_SPLASH_MESSAGE"] = "Seemann (AT)"
-            # os.environ["HOUDINI_SPLASH_FILE"] = "X:/Projekte/MedienprojektSeemann/00_pipeline/houdini/splash.jpg"
-            os.environ["HOUDINI_PATH"] += os.pathsep + "X:/Projekte/MedienprojektSeemann/00_pipeline/houdini"
+            # os.environ["HOUDINI_SPLASH_FILE"] = "X:/Projekte/MedienprojektSeemann/Seacarus/00_pipeline/houdini/splash.jpg"
+            os.environ["HOUDINI_PATH"] += os.pathsep + "X:/Projekte/MedienprojektSeemann/Seacarus/00_pipeline/houdini"
 
             # Random Splashscreen from splashscreen folder
             # tk = sgtk.platform.current_engine().sgtk
