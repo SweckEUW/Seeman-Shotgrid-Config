@@ -157,14 +157,20 @@ settings.tk-multi-publish2.houdini.asset_step:
   - name: Begin file versioning
     hook: "{engine}/tk-multi-publish2/basic/start_version_control.py"
     settings: {}
-  - name: Publish to Flow Production Tracking
-    hook: "{self}/publish_file.py:{config}/tk-multi-publish2/houdini/publishers/publish_session.py"
+  # - name: Publish to Flow Production Tracking
+  #   hook: "{self}/publish_file.py:{config}/tk-multi-publish2/houdini/publishers/publish_session.py"
+  #   settings:
+  #     Publish Template: houdini_asset_publish
+  # - name: Flow Production Tracking materia exporter
+  #   hook: "{self}/publish_file.py:{config}/tk-multi-publish2/maya/publishers/publish_camera.py"
+  #   settings:
+  #     Publish Template: maya_asset_named_publish
+  - name: Publish USD Layer
+    hook: "{config}/tk-multi-publish2/houdini/publishers/publish_usd_layer.py" # Pfad zu deinem neuen Hook
     settings:
-      Publish Template: houdini_asset_publish
-  - name: Flow Production Tracking materia exporter
-    hook: "{self}/publish_file.py:{config}/tk-multi-publish2/maya/publishers/publish_camera.py"
-    settings:
-      Publish Template: maya_asset_named_publish
+      Item: 
+        "houdini.usd.layer": "usd_layer_publish" # Verweis auf Plugin Logik
+      Publish Template: houdini_asset_publish_usd
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
 

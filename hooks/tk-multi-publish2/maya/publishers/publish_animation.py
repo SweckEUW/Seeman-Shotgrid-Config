@@ -41,7 +41,6 @@ class MayaSessionAnimationPublisherPlugin(HookBaseClass):
             }
         }
         base_settings.update(animation_publish_settings)
-
         return base_settings
 
     def create_settings_widget(

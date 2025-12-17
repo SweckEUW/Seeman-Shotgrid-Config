@@ -125,10 +125,10 @@ class MayaSessionCollector(HookBaseClass):
             )
 
         # Collect custom publishers
-        self._collect_session_usd(item)
-        self._collect_session_animation(item)
-        self._collect_session_camera(item)
-        self._collect_session_model(item)
+        # self._collect_session_usd(item)
+        # self._collect_session_animation(item)
+        # self._collect_session_camera(item)
+        # self._collect_session_model(item)
 
     def collect_current_maya_session(self, settings, parent_item):
         """
