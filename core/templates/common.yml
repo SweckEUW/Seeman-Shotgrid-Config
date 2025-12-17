@@ -89,16 +89,25 @@ paths:
   #
   # These don't require the standard formatting (with definition and root_name) because they
   # will be set within each template that uses the alias.
-  asset_root: 03_workfiles/assets/{Asset}/{Step}
-  shot_root: 03_workfiles/shots/{Sequence}/{Shot}/{Step}
 
-  sequence_root: 03_workfiles/shots/{Sequence}
+  # Workfile Paths
+  asset_root: 01_workfiles/assets/{Asset}/{Step}
+  shot_root: 01_workfiles/shots/{Sequence}/{Shot}/{Step}
 
-  asset_publish: 04_publish/assets/{Asset}/{Step}
-  shot_publish: 04_publish/shots/{Sequence}/{Shot}/{Step}
+  # Publish Paths
+  asset_publish: 02_publish/assets/{Asset}/{Step}
+  shot_publish: 02_publish/shots/{Sequence}/{Shot}/{Step}
 
-  asset_render_publish: 05_renders/assets/{Asset}/{Step}
-  shot_render_publish: 05_renders/shots/{Sequence}/{Shot}/{Step}
+  # Stage Paths
+  asset_stage: 03_stage/assets/{Asset}
+  shot_stage: 03_stage/shots/{Sequence}/{Shot}
+  asset_stage_file: "@asset_stage/{Asset}.usda"
+  shot_stage_file: "@shot_stage/{Sequence}/{Shot}.usda"
+
+  # Render Paths
+  asset_render_publish: 04_renders/assets/{Asset}/{Step}
+  shot_render_publish: 04_renders/shots/{Sequence}/{Shot}/{Step}
+
 
 
   ##########################################################################################
@@ -108,12 +117,6 @@ paths:
   # OCIO config path
   ocio_config:
     definition: "00_pipeline/ocio/config.ocio"
-
-  # USD paths
-  usd_asset_publish:
-    definition: "@asset_publish/usd/{name}/v{version}/{Asset}_{Step}_{name}_v{version}.usd"
-  usd_shot_publish:
-    definition: "@shot_publish/usd/{name}/v{version}/{Shot}_{Step}_{name}_v{version}.usd"
 
   # OBJ Sculpts Standalone Publish Template
   obj_asset_publish:
@@ -141,8 +144,6 @@ paths:
     definition: "@asset_root/maya/previews/{name}/{Asset}_{Step}_{name}_sRGB_v{version}.mov"
   asset_review_houdini:
     definition: "@asset_root/houdini/previews/{name}/{Asset}_{Step}_{name}_sRGB_v{version}.mov"
-
-
 
 #
 # The strings section is similar to the paths section - but rather than defining paths
