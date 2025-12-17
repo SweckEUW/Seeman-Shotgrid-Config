@@ -84,7 +84,8 @@ class MayaActions(HookBaseClass):
             loadReferenceDepth="all",
             mergeNamespacesOnClash=False,
             namespace=namespace,
-            returnNewNodes=True
+            returnNewNodes=True,
+            ignoreVersion=True,
         )
 
     def _create_usd_proxy_shape(self, path, sg_publish_data):
