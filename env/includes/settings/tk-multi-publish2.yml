@@ -233,22 +233,22 @@ settings.tk-multi-publish2.maya.asset_step:
     - name: Upload for review
       hook: "{self}/upload_version.py"
       settings: {}
-    - name: Publish Maya file to Flow Production Tracking
-      hook: "{self}/publish_file.py:{config}/tk-multi-publish2/maya/publishers/publish_session.py"
-      settings:
-        Publish Template: maya_asset_publish
-    - name: Flow Production Tracking animation exporter
-      hook: "{self}/publish_file.py:{config}/tk-multi-publish2/maya/publishers/publish_animation.py"
-      settings:
-        Publish Template: maya_asset_named_publish
-    - name: Flow Production Tracking camera exporter
-      hook: "{self}/publish_file.py:{config}/tk-multi-publish2/maya/publishers/publish_camera.py"
-      settings:
-        Publish Template: maya_asset_named_publish
-    - name: Flow Production Tracking model exporter
-      hook: "{self}/publish_file.py:{config}/tk-multi-publish2/maya/publishers/publish_model.py"
-      settings:
-        Publish Template: maya_asset_named_publish
+    # - name: Publish Maya file to Flow Production Tracking
+    #   hook: "{self}/publish_file.py:{config}/tk-multi-publish2/maya/publishers/publish_session.py"
+    #   settings:
+    #     Publish Template: maya_asset_publish
+    # - name: Flow Production Tracking animation exporter
+    #   hook: "{self}/publish_file.py:{config}/tk-multi-publish2/maya/publishers/publish_animation.py"
+    #   settings:
+    #     Publish Template: maya_asset_named_publish
+    # - name: Flow Production Tracking camera exporter
+    #   hook: "{self}/publish_file.py:{config}/tk-multi-publish2/maya/publishers/publish_camera.py"
+    #   settings:
+    #     Publish Template: maya_asset_named_publish
+    # - name: Flow Production Tracking model exporter
+    #   hook: "{self}/publish_file.py:{config}/tk-multi-publish2/maya/publishers/publish_model.py"
+    #   settings:
+    #     Publish Template: maya_asset_named_publish
 
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
@@ -265,22 +265,22 @@ settings.tk-multi-publish2.maya.shot_step:
     - name: Upload for review
       hook: "{self}/upload_version.py"
       settings: {}
-    - name: Publish Maya file to ShotGrid
-      hook: "{self}/publish_file.py:{config}/tk-multi-publish2/maya/publishers/publish_session.py"
-      settings:
-        Publish Template: maya_shot_publish
-    - name: ShotGrid animation exporter
-      hook: "{self}/publish_file.py:{config}/tk-multi-publish2/maya/publishers/publish_animation.py"
-      settings:
-        Publish Template: maya_shot_named_publish
-    - name: ShotGrid camera exporter
-      hook: "{self}/publish_file.py:{config}/tk-multi-publish2/maya/publishers/publish_camera.py"
-      settings:
-        Publish Template: maya_shot_named_publish
-    - name: ShotGrid model exporter
-      hook: "{self}/publish_file.py:{config}/tk-multi-publish2/maya/publishers/publish_model.py"
-      settings:
-        Publish Template: maya_shot_named_publish
+    # - name: Publish Maya file to ShotGrid
+    #   hook: "{self}/publish_file.py:{config}/tk-multi-publish2/maya/publishers/publish_session.py"
+    #   settings:
+    #     Publish Template: maya_shot_publish
+    # - name: ShotGrid animation exporter
+    #   hook: "{self}/publish_file.py:{config}/tk-multi-publish2/maya/publishers/publish_animation.py"
+    #   settings:
+    #     Publish Template: maya_shot_named_publish
+    # - name: ShotGrid camera exporter
+    #   hook: "{self}/publish_file.py:{config}/tk-multi-publish2/maya/publishers/publish_camera.py"
+    #   settings:
+    #     Publish Template: maya_shot_named_publish
+    # - name: ShotGrid model exporter
+    #   hook: "{self}/publish_file.py:{config}/tk-multi-publish2/maya/publishers/publish_model.py"
+    #   settings:
+    #     Publish Template: maya_shot_named_publish
 
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"

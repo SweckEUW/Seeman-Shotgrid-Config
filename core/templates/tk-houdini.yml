@@ -28,16 +28,6 @@ keys:
     type: str
 
 paths:
-  houdini_template_directory:
-    definition: "00_pipeline/houdini/templates"
-
-  houdini_splash_screen:
-    definition: "00_pipeline/houdini/splash_screen.jpg"
-
-  # OTL files
-  houdini_otls:
-    definition: "00_pipeline/houdini/otls"
-
   ##########################################################################################
   # Shot level paths
   #
