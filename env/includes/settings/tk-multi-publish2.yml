@@ -233,10 +233,10 @@ settings.tk-multi-publish2.maya.asset_step:
     - name: Upload for review
       hook: "{self}/upload_version.py"
       settings: {}
-    # - name: Publish Maya file to Flow Production Tracking
-    #   hook: "{self}/publish_file.py:{config}/tk-multi-publish2/maya/publishers/publish_session.py"
-    #   settings:
-    #     Publish Template: maya_asset_publish
+    - name: Publish Maya file to Flow Production Tracking
+      hook: "{self}/publish_file.py:{config}/tk-multi-publish2/maya/publishers/publish_session.py"
+      settings:
+        Publish Template: maya_asset_publish
     # - name: Flow Production Tracking animation exporter
     #   hook: "{self}/publish_file.py:{config}/tk-multi-publish2/maya/publishers/publish_animation.py"
     #   settings:
