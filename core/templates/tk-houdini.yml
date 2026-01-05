@@ -58,7 +58,7 @@ paths:
     definition: "@asset_root/snapshots/{Asset}_{Step}_snap_{name}_v{version}_{timestamp}.hipnc"
   # The location of published houdini files
   houdini_asset_publish:
-    definition: "asset_publish/{Asset}_{Step}_{name}_pub_{name}_v{version}.hipnc"
+    definition: "@asset_publish/{Asset}_{Step}_{name}_pub_{name}_v{version}.hipnc"
   # USD
   houdini_asset_publish_usd: 
     definition: "@asset_publish/{Asset}_{Step}_v{version}.usd"
