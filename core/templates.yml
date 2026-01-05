@@ -22,11 +22,6 @@
 
 includes:
   - ./templates/common.yml
-  - ./templates/tk-aftereffects.yml
-  - ./templates/tk-hiero.yml
   - ./templates/tk-houdini.yml
-  - ./templates/tk-mari.yml
   - ./templates/tk-maya.yml
-  - ./templates/tk-motionbuilder.yml
   - ./templates/tk-nuke.yml
-  - ./templates/tk-photoshopcc.yml

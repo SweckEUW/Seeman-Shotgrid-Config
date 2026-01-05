@@ -32,7 +32,7 @@ settings.tk-maya.asset:
   apps:
     tk-multi-about:
       location: "@apps.tk-multi-about.location"
-    tk-multi-screeningroom: "@settings.tk-multi-screeningroom.rv"
+    # tk-multi-screeningroom: "@settings.tk-multi-screeningroom.rv"
     tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.launch_at_startup"
   menu_favourites:
@@ -60,7 +60,7 @@ settings.tk-maya.asset_step:
   - {app_instance: tk-multi-loader2, name: Load...}
   - {app_instance: tk-multi-publish2, name: Publish...}
   - {app_instance: tk-multi-breakdown2, name: Scene Breakdown...}
-  template_project: asset_work_area_maya
+  template_project: asset_root
   location: "@engines.tk-maya.location"
 
 # project
@@ -68,7 +68,7 @@ settings.tk-maya.project:
   apps:
     tk-multi-about:
       location: "@apps.tk-multi-about.location"
-    tk-multi-screeningroom: "@settings.tk-multi-screeningroom.rv"
+    # tk-multi-screeningroom: "@settings.tk-multi-screeningroom.rv"
     tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.launch_at_startup"
   menu_favourites:
@@ -80,7 +80,7 @@ settings.tk-maya.sequence:
   apps:
     tk-multi-about:
       location: "@apps.tk-multi-about.location"
-    tk-multi-screeningroom: "@settings.tk-multi-screeningroom.rv"
+    # tk-multi-screeningroom: "@settings.tk-multi-screeningroom.rv"
     tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.launch_at_startup"
   menu_favourites:
@@ -92,7 +92,7 @@ settings.tk-maya.shot:
   apps:
     tk-multi-about:
       location: "@apps.tk-multi-about.location"
-    tk-multi-screeningroom: "@settings.tk-multi-screeningroom.rv"
+    # tk-multi-screeningroom: "@settings.tk-multi-screeningroom.rv"
     tk-multi-shotgunpanel: "@settings.tk-multi-shotgunpanel"
     tk-multi-workfiles2: "@settings.tk-multi-workfiles2.launch_at_startup"
   menu_favourites:
@@ -122,5 +122,5 @@ settings.tk-maya.shot_step:
   - {app_instance: tk-multi-loader2, name: Load...}
   - {app_instance: tk-multi-publish2, name: Publish...}
   - {app_instance: tk-multi-breakdown2, name: Scene Breakdown...}
-  template_project: shot_work_area_maya
+  template_project: shot_root
   location: "@engines.tk-maya.location"

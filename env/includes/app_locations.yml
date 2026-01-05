@@ -100,30 +100,6 @@ apps.tk-shotgun-launchfolder.location:
   type: app_store
   name: tk-shotgun-launchfolder
   version: v0.4.0
-apps.tk-shotgun-launchpublish.location:
-  type: app_store
-  name: tk-shotgun-launchpublish
-  version: v0.7.1
-apps.tk-shotgun-launchvredreview.location:
-  type: app_store
-  name: tk-shotgun-launchvredreview
-  version: v1.2.1
-apps.tk-hiero-export.location:
-  type: app_store
-  name: tk-hiero-export
-  version: v0.8.3
-apps.tk-hiero-openinshotgun.location:
-  type: app_store
-  name: tk-hiero-openinshotgun
-  version: v0.5.0
-apps.tk-houdini-alembicnode.location:
-  type: app_store
-  name: tk-houdini-alembicnode
-  version: v0.6.0
-apps.tk-houdini-mantranode.location:
-  type: app_store
-  name: tk-houdini-mantranode
-  version: v0.6.0
 apps.tk-nuke-quickreview.location:
   type: app_store
   name: tk-nuke-quickreview
@@ -132,39 +108,27 @@ apps.tk-nuke-writenode.location:
   name: tk-nuke-writenode
   type: app_store
   version: v1.7.2
-apps.tk-flame-export.location:
-  name: tk-flame-export
-  type: app_store
-  version: v1.11.4
-apps.tk-flame-review.location:
-  name: tk-flame-review
-  type: app_store
-  version: v1.5.5
-apps.tk-mari-projectmanager.location:
-  name: tk-mari-projectmanager
-  type: app_store
-  version: v1.4.1
-frameworks: '@frameworks'
+
 # houdini renderman
-apps.tk-houdini-renderman.location:
-  type: github_release
-  organization: nfa-vfxim
-  repository: tk-houdini-renderman
-  version: 0.3.6
+# apps.tk-houdini-renderman.location:
+#   type: github_release
+#   organization: nfa-vfxim
+#   repository: tk-houdini-renderman
+#   version: 0.3.6
 
 # houdini cachenode
-apps.tk-houdini-cachenode.location:
-  type: github_release
-  organization: nfa-vfxim
-  repository: tk-houdini-cachenode
-  version: 0.3.4
+# apps.tk-houdini-cachenode.location:
+#   type: github_release
+#   organization: nfa-vfxim
+#   repository: tk-houdini-cachenode
+#   version: 0.3.4
 
 # houdini karma
-apps.tk-houdini-karma.location:
-  type: github_release
-  organization: nfa-vfxim
-  repository: tk-houdini-karma
-  version: 1.1.1
+# apps.tk-houdini-karma.location:
+#   type: github_release
+#   organization: nfa-vfxim
+#   repository: tk-houdini-karma
+#   version: 1.1.1
 
 # reviewsubmission2
 # apps.tk-multi-reviewsubmission2.location:

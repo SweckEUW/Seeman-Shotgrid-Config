@@ -14,12 +14,6 @@
 # be included and referenced wherever shared frameworks are required.
 
 frameworks:
-  # adobe - Common functionality for adobe products
-  tk-framework-adobe_v1.x.x:
-    location:
-      type: app_store
-      name: tk-framework-adobe
-      version: v1.2.11
   # adminui - provides GUIs for administrative commands
   tk-framework-adminui_v0.x.x:
     location:
@@ -27,32 +21,20 @@ frameworks:
       name: tk-framework-adminui
       version: v0.7.7
 
-  # alias - Toolkit Framework for Autodesk's Alias
-  tk-framework-alias_v1.x.x:
-    location:
-      version: v1.4.1
-      type: app_store
-      name: tk-framework-alias
-
-  # aliastranslations - provides Alias translation tools
-  tk-framework-aliastranslations_v0.x.x:
-    location:
-      version: v0.3.0
-      type: app_store
-      name: tk-framework-aliastranslations
-
   # desktopserver - provides a server to run local commands.
   tk-framework-desktopserver_v1.x.x:
     location:
       type: app_store
       name: tk-framework-desktopserver
       version: v1.8.5
+    
   # qtwidgets - collection of Toolkit related QT Widgets
   tk-framework-qtwidgets_v2.x.x:
     location:
       type: app_store
       name: tk-framework-qtwidgets
       version: v2.12.8
+
   # shotgunutils - Shotgun Related Utilities
   tk-framework-shotgunutils_v4.x.x:
     location:
@@ -64,6 +46,7 @@ frameworks:
       type: app_store
       name: tk-framework-shotgunutils
       version: v5.11.1
+
   # widget - QT Widget Framework for Tank Apps (qtwidgets fw predecessor)
   tk-framework-widget_v0.2.x:
     location:
@@ -82,14 +65,3 @@ frameworks:
       type: app_store
       name: tk-framework-desktopclient
       version: v0.4.3
-  # lmv - Toolkit Framework for Autodesk's LMV
-  tk-framework-lmv_v0.x.x:
-    location:
-      version: v0.2.2
-      type: app_store
-      name: tk-framework-lmv
-  tk-framework-lmv_v1.x.x:
-    location:
-      version: v1.1.0
-      type: app_store
-      name: tk-framework-lmv

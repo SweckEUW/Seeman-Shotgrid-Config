@@ -56,7 +56,7 @@
 #   - {app_instance: tk-multi-snapshot, name: Snapshot...}
 #   - {app_instance: tk-multi-workfiles2, name: File Save...}
 #   - {app_instance: tk-multi-publish2, name: Publish...}
-#   template_project: asset_work_area_blender
+#   template_project: asset_root_blender
 #   location: "@engines.tk-blender.location"
 
 # # project
@@ -118,5 +118,5 @@
 #   - {app_instance: tk-multi-snapshot, name: Snapshot...}
 #   - {app_instance: tk-multi-workfiles2, name: File Save...}
 #   - {app_instance: tk-multi-publish2, name: Publish...}
-#   template_project: shot_work_area_blender
+#   template_project: shot_root_blender
 #   location: "@engines.tk-blender.location"
