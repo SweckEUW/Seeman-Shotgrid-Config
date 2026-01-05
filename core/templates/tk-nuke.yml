@@ -31,7 +31,7 @@ paths:
 
   # The location of WIP script files
   nuke_shot_work:
-    definition: "@shot_root/{Sequence}_{Shot}_{Step}_work_{name}_v{version}.nk"
+    definition: "@shot_root/{Sequence}_{Shot}_{Step}_{name}_v{version}.nk"
   # The location of backups of WIP files
   nuke_shot_snapshot:
     definition: "@shot_root/snapshots/sc{Sequence}_{Shot}_{Step}_snap_{name}_v{version}_{timestamp}.nk"
@@ -41,14 +41,8 @@ paths:
   # Write node outputs
   nuke_shot_render:
     definition: "@shot_root/renders/{name}/{write.output}/v{version}/{Sequence}_{Shot}_{Step}_{name}_{write.output}_v{version}.{SEQ}.exr"
-    # root_name: "render"
   nuke_shot_render_pub:
     definition: "@shot_render_publish/{name}/{write.output}/render/v{version}/{Sequence}_{Shot}_{Step}_{name}_{write.output}_v{version}.{SEQ}.exr"
-  nuke_shot_tiff_render:
-    definition: "@shot_root/renders/{name}/{write.output}/v{version}/{Sequence}_{Shot}_{name}_{write.output}_v{version}.{SEQ}.tiff"
-    # root_name: "render"
-  nuke_shot_tiff_render_pub:
-    definition: "@shot_render_publish/{name}/{write.output}/render/v{version}/{Sequence}_{Shot}_{Step}_{name}_{write.output}_v{version}.{SEQ}.tiff"
   # Review output
   shot_quicktime_quick:
     definition: "@shot_root/previews/{name}/{Sequence}_{Shot}_{name}_{write.output}_sRGB_v{version}_{iteration}.mov"
@@ -62,15 +56,8 @@ paths:
   # outputs from the Shotgun Write Node for assets
   nuke_asset_render:
     definition: "@asset_root/renders/{name}/{write.output}/v{version}/{Asset}_{Step}_{name}_{write.output}_v{version}.{SEQ}.exr"
-    # root_name: "render"
   nuke_asset_render_pub:
     definition: "@asset_render_publish/{name}/{write.output}/render/v{version}/{Asset}_{Step}_{name}_{write.output}_v{version}.{SEQ}.exr"
-  nuke_asset_tiff_render:
-    definition: "@asset_root/renders/{name}/{write.output}/v{version}/{Asset}_{Step}_{name}_{write.output}_v{version}.{SEQ}.tiff"
-    # root_name: "render"
-  nuke_asset_tiff_render_pub:
-    definition: "@asset_render_publish/{name}/{write.output}/render/v{version}/{Asset}_{Step}_{name}_{write.output}_v{version}.{SEQ}.tiff"
-
   # review output
   nuke_asset_render_movie:
     definition: "@asset_render_publish/{name}/{write.output}/mov/{Asset}_{Step}_{name}_{write.output}_sRGB_v{version}.mov"
@@ -78,19 +65,10 @@ paths:
     definition: "@asset_render_publish/{name}/{write.output}/mov/{Asset}_{Step}_{name}_{iteration}.mov"
   # The location of WIP script files
   nuke_asset_work:
-    definition: "@asset_root/{Asset}_{Step}_{name}_work_v{version}.nk"
+    definition: "@asset_root/{Asset}_{Step}_{name}_v{version}.nk"
   # The location of backups of WIP files
   nuke_asset_snapshot:
     definition: "@asset_root/snapshots/{Asset}_{Step}_{name}_snap_v{version}_{timestamp}.nk"
   # The location of published nuke script files
   nuke_asset_publish:
     definition: "@asset_publish/{Asset}_{Step}_{name}_pub_v{version}.nk"
-
-strings:
-  # when a review Version in Shotgun is created inside of Nuke, this is the
-  # name that is being given to it (the code field)
-  nuke_shot_version_name: "{Sequence}_{Shot}_[{Step}_]_nuke_{name}_{write.output}_[{colorspace}_]v{version}[.{iteration}]"
-  nuke_quick_shot_version_name: "{Shot}_{name}_quick_{iteration}"
-
-  nuke_asset_version_name: "{Asset}_[{Step}_]_nuke_{name}_{write.output}_[{colorspace}_]v{version}[.{iteration}]"
-  nuke_quick_asset_version_name: "{Asset}_{name}_quick_{iteration}"
