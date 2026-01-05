@@ -23,80 +23,68 @@
 paths:
   # Template files
   nuke_template_file:
-    definition: "00_pipeline/nuke/template/ShotGridTemplate.nk"
+    definition: "00_pipeline/template/ShotGridTemplate.nk"
 
   ##########################################################################################
   # Shot level paths
   #
 
-  # define the location of a work area
-  shot_work_area_nuke:
-    definition: "@shot_root/nuke"
-  # define the location of a publish area
-  shot_publish_area_nuke:
-    definition: "@shot_publish/nuke"
   # The location of WIP script files
   nuke_shot_work:
-    definition: "@shot_root/nuke/sc{Sequence}_{Shot}_{Step}_work_{name}_v{version}.nk"
+    definition: "@shot_root/{Sequence}_{Shot}_{Step}_work_{name}_v{version}.nk"
   # The location of backups of WIP files
   nuke_shot_snapshot:
-    definition: "@shot_root/nuke/snapshots/sc{Sequence}_{Shot}_{Step}_snap_{name}_v{version}_{timestamp}.nk"
+    definition: "@shot_root/snapshots/sc{Sequence}_{Shot}_{Step}_snap_{name}_v{version}_{timestamp}.nk"
   # The location of published nuke script files
   nuke_shot_publish:
-    definition: "@shot_publish/nuke/sc{Sequence}_{Shot}_{Step}_pub_{name}_v{version}.nk"
+    definition: "@shot_publish/{Sequence}_{Shot}_{Step}_pub_{name}_v{version}.nk"
   # Write node outputs
   nuke_shot_render:
-    definition: "@shot_root/nuke/renders/{name}/{write.output}/v{version}/{Sequence}_{Shot}_{Step}_{name}_{write.output}_v{version}.{SEQ}.exr"
+    definition: "@shot_root/renders/{name}/{write.output}/v{version}/{Sequence}_{Shot}_{Step}_{name}_{write.output}_v{version}.{SEQ}.exr"
     # root_name: "render"
   nuke_shot_render_pub:
-    definition: "@shot_render_publish/nuke/{name}/{write.output}/render/v{version}/{Sequence}_{Shot}_{Step}_{name}_{write.output}_v{version}.{SEQ}.exr"
+    definition: "@shot_render_publish/{name}/{write.output}/render/v{version}/{Sequence}_{Shot}_{Step}_{name}_{write.output}_v{version}.{SEQ}.exr"
   nuke_shot_tiff_render:
-    definition: "@shot_root/nuke/renders/{name}/{write.output}/v{version}/{Sequence}_{Shot}_{name}_{write.output}_v{version}.{SEQ}.tiff"
+    definition: "@shot_root/renders/{name}/{write.output}/v{version}/{Sequence}_{Shot}_{name}_{write.output}_v{version}.{SEQ}.tiff"
     # root_name: "render"
   nuke_shot_tiff_render_pub:
-    definition: "@shot_render_publish/nuke/{name}/{write.output}/render/v{version}/{Sequence}_{Shot}_{Step}_{name}_{write.output}_v{version}.{SEQ}.tiff"
+    definition: "@shot_render_publish/{name}/{write.output}/render/v{version}/{Sequence}_{Shot}_{Step}_{name}_{write.output}_v{version}.{SEQ}.tiff"
   # Review output
   shot_quicktime_quick:
-    definition: "@shot_root/nuke/previews/{name}/{Sequence}_{Shot}_{name}_{write.output}_sRGB_v{version}_{iteration}.mov"
+    definition: "@shot_root/previews/{name}/{Sequence}_{Shot}_{name}_{write.output}_sRGB_v{version}_{iteration}.mov"
   nuke_shot_render_movie:
-    definition: "@shot_render_publish/nuke/{name}/{write.output}/mov/{Sequence}_{Shot}_{Step}_{name}_{write.output}_sRGB_v{version}.mov"
+    definition: "@shot_render_publish/{name}/{write.output}/mov/{Sequence}_{Shot}_{Step}_{name}_{write.output}_sRGB_v{version}.mov"
 
   ##########################################################################################
   # Asset pipeline
   #
 
-  # define the location of a work area
-  asset_work_area_nuke:
-    definition: "@asset_root/work/nuke"
-  # define the location of a publish area
-  asset_publish_area_nuke:
-    definition: "@asset_root/publish"
   # outputs from the Shotgun Write Node for assets
   nuke_asset_render:
-    definition: "@asset_root/nuke/renders/{name}/{write.output}/v{version}/{Asset}_{Step}_{name}_{write.output}_v{version}.{SEQ}.exr"
+    definition: "@asset_root/renders/{name}/{write.output}/v{version}/{Asset}_{Step}_{name}_{write.output}_v{version}.{SEQ}.exr"
     # root_name: "render"
   nuke_asset_render_pub:
-    definition: "@asset_render_publish/nuke/{name}/{write.output}/render/v{version}/{Asset}_{Step}_{name}_{write.output}_v{version}.{SEQ}.exr"
+    definition: "@asset_render_publish/{name}/{write.output}/render/v{version}/{Asset}_{Step}_{name}_{write.output}_v{version}.{SEQ}.exr"
   nuke_asset_tiff_render:
-    definition: "@asset_root/nuke/renders/{name}/{write.output}/v{version}/{Asset}_{Step}_{name}_{write.output}_v{version}.{SEQ}.tiff"
+    definition: "@asset_root/renders/{name}/{write.output}/v{version}/{Asset}_{Step}_{name}_{write.output}_v{version}.{SEQ}.tiff"
     # root_name: "render"
   nuke_asset_tiff_render_pub:
-    definition: "@asset_render_publish/nuke/{name}/{write.output}/render/v{version}/{Asset}_{Step}_{name}_{write.output}_v{version}.{SEQ}.tiff"
+    definition: "@asset_render_publish/{name}/{write.output}/render/v{version}/{Asset}_{Step}_{name}_{write.output}_v{version}.{SEQ}.tiff"
 
   # review output
   nuke_asset_render_movie:
-    definition: "@asset_render_publish/nuke/{name}/{write.output}/mov/{Asset}_{Step}_{name}_{write.output}_sRGB_v{version}.mov"
+    definition: "@asset_render_publish/{name}/{write.output}/mov/{Asset}_{Step}_{name}_{write.output}_sRGB_v{version}.mov"
   asset_quicktime_quick:
-    definition: "@asset_render_publish/nuke/{name}/{write.output}/mov/{Asset}_{Step}_{name}_{iteration}.mov"
+    definition: "@asset_render_publish/{name}/{write.output}/mov/{Asset}_{Step}_{name}_{iteration}.mov"
   # The location of WIP script files
   nuke_asset_work:
-    definition: "@asset_root/nuke/{Asset}_{Step}_{name}_work_v{version}.nk"
+    definition: "@asset_root/{Asset}_{Step}_{name}_work_v{version}.nk"
   # The location of backups of WIP files
   nuke_asset_snapshot:
-    definition: "@asset_root/nuke/snapshots/{Asset}_{Step}_{name}_snap_v{version}_{timestamp}.nk"
+    definition: "@asset_root/snapshots/{Asset}_{Step}_{name}_snap_v{version}_{timestamp}.nk"
   # The location of published nuke script files
   nuke_asset_publish:
-    definition: "@asset_publish/nuke/{Asset}_{Step}_{name}_pub_v{version}.nk"
+    definition: "@asset_publish/{Asset}_{Step}_{name}_pub_v{version}.nk"
 
 strings:
   # when a review Version in Shotgun is created inside of Nuke, this is the

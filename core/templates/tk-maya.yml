@@ -34,27 +34,21 @@ paths:
   # Shot level paths
   #
 
-  # define the location of a work area
-  shot_work_area_maya:
-    definition: "@shot_root/maya"
-  # define the location of a publish area
-  shot_publish_area_maya:
-    definition: "@shot_publish/maya"
   # The location of WIP files
   maya_shot_work:
-    definition: "@shot_root/maya/scenes/sc{Sequence}_{Shot}_{Step}_work_{name}_v{version}.{maya_extension}"
+    definition: "@shot_root/scenes/sc{Sequence}_{Shot}_{Step}_work_{name}_v{version}.{maya_extension}"
   # The location of backups of WIP files
   maya_shot_snapshot:
-    definition: "@shot_root/maya/snapshots/sc{Sequence}_{Shot}_{Step}_snap_{name}_v{version}_{timestamp}.{maya_extension}"
+    definition: "@shot_root/snapshots/sc{Sequence}_{Shot}_{Step}_snap_{name}_v{version}_{timestamp}.{maya_extension}"
   # The location of playblasts
   maya_shot_playblast:
-    definition: "@shot_root/maya/previews/{name}/{Sequence}_{Shot}_{name}_v{version}.mov"
+    definition: "@shot_root/previews/{name}/{Sequence}_{Shot}_{name}_v{version}.mov"
   # The location of published maya files
   maya_shot_publish:
-    definition: "@shot_publish/maya/sc{Sequence}_{Shot}_{Step}_pub_{name}_v{version}.{maya_extension}"
+    definition: "@shot_publish/{Sequence}_{Shot}_{Step}_pub_{name}_v{version}.{maya_extension}"
   # Alembic
   maya_shot_abc:
-    definition: "@shot_publish/abc/{name}/v{version}/{Shot}_{Step}_{name}_v{version}.abc"
+    definition: "@shot_publish/{name}/v{version}/{Shot}_{Step}_{name}_v{version}.abc"
   # Named publishes 
   maya_shot_named_publish:
     definition: "@shot_publish/{publish_type}/{name}/{publish_name}/v{version}/{Shot}_{Step}_{name}_{publish_name}_{publish_type}_v{version}.{publish_extension}"
@@ -62,24 +56,18 @@ paths:
   # Asset pipeline
   #
 
-  # define the location of a work area
-  asset_work_area_maya:
-    definition: "@asset_root/maya"
-  # define the location of a publish area
-  asset_publish_area_maya:
-    definition: "@asset_publish/maya"
   # The location of WIP files
   maya_asset_work:
-    definition: "@asset_root/maya/scenes/{Asset}_{Step}_{name}_work_v{version}.{maya_extension}"
+    definition: "@asset_root/scenes/{Asset}_{Step}_{name}_work_v{version}.{maya_extension}"
   # The location of backups of WIP files
   maya_asset_snapshot:
-    definition: "@asset_root/maya/snapshots/{Asset}_{Step}_{name}_snap_v{version}_{timestamp}.{maya_extension}"
+    definition: "@asset_root/snapshots/{Asset}_{Step}_{name}_snap_v{version}_{timestamp}.{maya_extension}"
   # The location of published maya files
   maya_asset_publish:
-    definition: "@asset_publish/maya/{Asset}_{Step}_{name}_pub_v{version}.{maya_extension}"
+    definition: "@asset_publish/{Asset}_{Step}_{name}_pub_v{version}.{maya_extension}"
   # Alembic
   maya_asset_abc:
-    definition: "@asset_publish/abc/{Asset}_{Step}_{name}_v{version}.abc"
+    definition: "@asset_publish/{Asset}_{Step}_{name}_v{version}.abc"
   # Named publishes 
   maya_asset_named_publish:
     definition: "@asset_publish/{publish_type}/{name}/{publish_name}/v{version}/{Asset}_{Step}_{name}_{publish_name}_{publish_type}_v{version}.{publish_extension}"

@@ -32,100 +32,88 @@ paths:
   # Shot level paths
   #
 
-  # define the location of a work area
-  shot_work_area_houdini:
-    definition: "@shot_root/houdini"
-  # define the location of a publish area
-  shot_publish_area_houdini:
-    definition: "@shot_publish/houdini"
   # The location of WIP files
   houdini_shot_work:
-    definition: "@shot_root/houdini/sc{Sequence}_{Shot}_{Step}_work_{name}_v{version}.hipnc"
+    definition: "@shot_root/{Sequence}_{Shot}_{Step}_work_{name}_v{version}.hipnc"
   # The location of backups of WIP files
   houdini_shot_snapshot:
-    definition: "@shot_root/houdini/snapshots/sc{Sequence}_{Shot}_{Step}_snap_{name}_v{version}_{timestamp}.hipnc"
+    definition: "@shot_root/snapshots/sc{Sequence}_{Shot}_{Step}_snap_{name}_v{version}_{timestamp}.hipnc"
   # The location of published houdini files
   houdini_shot_publish:
-    definition: "@shot_publish/houdini/sc{Sequence}_{Shot}_{Step}_pub_{name}_v{version}.hipnc"
+    definition: "@shot_publish/{Sequence}_{Shot}_{Step}_pub_{name}_v{version}.hipnc"
   # Alembic caches
   houdini_shot_work_alembic_cache:
-    definition: "@shot_root/houdini/cache/alembic/{houdini.node}/v{version}/sc{Sequence}_{Shot}_{Step}_work_{name}_v{version}.abc"
+    definition: "@shot_root/cache/alembic/{houdini.node}/v{version}/sc{Sequence}_{Shot}_{Step}_work_{name}_v{version}.abc"
   #    # root_name: "render" # Place on source until can be published from render to source
   # Fbx caches
   houdini_shot_work_fbx_cache:
-    definition: "@shot_root/houdini/cache/fbx/{houdini.node}/v{version}/sc{Sequence}_{Shot}_{Step}_work_{name}_v{version}.fbx"
+    definition: "@shot_root/cache/fbx/{houdini.node}/v{version}/{Sequence}_{Shot}_{Step}_work_{name}_v{version}.fbx"
   #    # root_name: "render" # Place on source until can be published from render to source
   # File work caches
   houdini_shot_work_file_cache:
-    definition: "@shot_root/houdini/cache/bgeo/{name}/v{version}/sc{Sequence}_{Shot}_{Step}_work_{name}_v{version}.{SEQ}.bgeo"
+    definition: "@shot_root/cache/bgeo/{name}/v{version}/{Sequence}_{Shot}_{Step}_work_{name}_v{version}.{SEQ}.bgeo"
     # root_name: "render"
   # File publish caches
   houdini_shot_publish_file_cache:
-    definition: "@shot_publish/cache/bgeo/{name}/v{version}/sc{Sequence}_{Shot}_{Step}_pub_{name}_v{version}.{SEQ}.bgeo"
+    definition: "@shot_publish/cache/bgeo/{name}/v{version}/{Sequence}_{Shot}_{Step}_pub_{name}_v{version}.{SEQ}.bgeo"
   # USD
   houdini_shot_usd_publish:
-    definition: "@shot_publish/usd/{name}/v{version}/sc{Sequence}_{Shot}_{Step}_pub_{name}_v{version}.usd"
+    definition: "@shot_publish/usd/{name}/v{version}/{Sequence}_{Shot}_{Step}_pub_{name}_v{version}.usd"
   houdini_asset_publish_usd: 
     definition: "@asset_publish/{Asset}_{Step}_v{version}.usd"
 
   # Rendered images
   houdini_shot_render:
-    definition: "@shot_root/houdini/renders/{name}/{write.output}/v{version}/[{aov_name}/]{Sequence}_{Shot}_{Step}_{name}_{write.output}_[{aov_name}_]v{version}.{SEQ}.exr"
+    definition: "@shot_root/renders/{name}/{write.output}/v{version}/[{aov_name}/]{Sequence}_{Shot}_{Step}_{name}_{write.output}_[{aov_name}_]v{version}.{SEQ}.exr"
     # root_name: "render"
   houdini_shot_render_pub:
-    definition: "@shot_render_publish/houdini/{name}/{write.output}/render/v{version}/[{aov_name}/]{Sequence}_{Shot}_{Step}_{name}_{write.output}_[{aov_name}_]v{version}.{SEQ}.exr"
+    definition: "@shot_render_publish/{name}/{write.output}/render/v{version}/[{aov_name}/]{Sequence}_{Shot}_{Step}_{name}_{write.output}_[{aov_name}_]v{version}.{SEQ}.exr"
   houdini_shot_render_review:
-    definition: "@shot_render_publish/houdini/{name}/{write.output}/review/v{version}/{Sequence}_{Shot}_{Step}_{name}_{write.output}_v{version}.{SEQ}.exr"
-  houdini_shot_render_movie:
-    definition: "@shot_render_publish/houdini/{name}/{write.output}/mov/{Sequence}_{Shot}_{Step}_{name}_{write.output}_sRGB_v{version}.mov"
+    definition: "@shot_render_publish/{name}/{write.output}/review/v{version}/{Sequence}_{Shot}_{Step}_{name}_{write.output}_v{version}.{SEQ}.exr"
+  # houdini_shot_render_movie:
+  #   definition: "@shot_render_publish/{name}/{write.output}/mov/{Sequence}_{Shot}_{Step}_{name}_{write.output}_sRGB_v{version}.mov"
 
   # Additional outputs
   houdini_shot_extra_plane:
-    definition: "@shot_root/houdini/renders/{name}/extra/v{version}/{aov_name}/{Sequence}_{Shot}_{Step}_{name}_{aov_name}_v{version}.{SEQ}.exr"
+    definition: "@shot_root/renders/{name}/extra/v{version}/{aov_name}/{Sequence}_{Shot}_{Step}_{name}_{aov_name}_v{version}.{SEQ}.exr"
     # root_name: "render"
 
   houdini_shot_ifd:
-    definition: "@shot_root/houdini/ifds/{name}/v{version}/{Sequence}_{Shot}_{name}_v{version}.{SEQ}.ifd"
+    definition: "@shot_root/ifds/{name}/v{version}/{Sequence}_{Shot}_{name}_v{version}.{SEQ}.ifd"
     # root_name: "render"
 
   houdini_shot_dcm:
-    definition: "@shot_root/houdini/dcms/{name}/v{version}/{Sequence}_{Shot}_{name}_v{version}.{SEQ}.dcm"
+    definition: "@shot_root/dcms/{name}/v{version}/{Sequence}_{Shot}_{name}_v{version}.{SEQ}.dcm"
     # root_name: "render"
 
   houdini_shot_ass:
-    definition: "@shot_root/houdini/ass/{name}/v{version}/{Sequence}_{Shot}_{name}_v{version}.{SEQ}.ass"
+    definition: "@shot_root/ass/{name}/v{version}/{Sequence}_{Shot}_{name}_v{version}.{SEQ}.ass"
     # root_name: "render"
 
   ##########################################################################################
   # Asset pipeline
   #
 
-  # define the location of a work area
-  asset_work_area_houdini:
-    definition: "@asset_root/houdini"
-  # define the location of a publish area
-  asset_publish_area_houdini:
-    definition: "@asset_publish/houdini"
   # The location of WIP files
   houdini_asset_work:
-    definition: "@asset_root/houdini/{Asset}_{Step}_work_{name}_v{version}.hipnc"
+    definition: "@asset_root/{Asset}_{Step}_work_{name}_v{version}.hipnc"
   # The location of backups of WIP files
   houdini_asset_snapshot:
-    definition: "@asset_root/houdini/snapshots/{Asset}_{Step}_snap_{name}_v{version}_{timestamp}.hipnc"
+    definition: "@asset_root/snapshots/{Asset}_{Step}_snap_{name}_v{version}_{timestamp}.hipnc"
   # The location of published houdini files
   houdini_asset_publish:
-    definition: "@asset_publish/houdini/{Asset}_{Step}_{name}_pub_{name}_v{version}.hipnc"
+    definition: "asset_publish/{Asset}_{Step}_{name}_pub_{name}_v{version}.hipnc"
   # Alembic caches
   houdini_asset_work_alembic_cache:
-    definition: "@asset_root/houdini/cache/alembic/{name}/{houdini.node}/v{version}/{Asset}_{Step}_work_v{version}.abc"
+    definition: "@asset_root/cache/alembic/{name}/{houdini.node}/v{version}/{Asset}_{Step}_work_v{version}.abc"
   #    # root_name: "render" # Place on source until can be published from render to source
   # fbx caches
   houdini_asset_work_fbx_cache:
-    definition: "@asset_root/houdini/cache/fbx/{name}/{houdini.node}/v{version}/{Asset}_{Step}_work_v{version}.fbx"
+    definition: "@asset_root/cache/fbx/{name}/{houdini.node}/v{version}/{Asset}_{Step}_work_v{version}.fbx"
   #    # root_name: "render" # Place on source until can be published from render to source
   # File work caches
   houdini_asset_work_file_cache:
-    definition: "@asset_root/houdini/cache/bgeo/{name}/v{version}/{Asset}_{Step}_work_{name}_v{version}.{SEQ}.bgeo"
+    definition: "@asset_root/cache/bgeo/{name}/v{version}/{Asset}_{Step}_work_{name}_v{version}.{SEQ}.bgeo"
     # root_name: "render"
   # File publish caches
   houdini_asset_publish_file_cache:
@@ -136,30 +124,30 @@ paths:
 
   # Rendered images
   houdini_asset_render:
-    definition: "@asset_root/houdini/renders/{name}/{write.output}/v{version}/[{aov_name}/]{Asset}_{Step}_{name}_{write.output}_[{aov_name}_]v{version}.{SEQ}.exr"
+    definition: "@asset_root/renders/{name}/{write.output}/v{version}/[{aov_name}/]{Asset}_{Step}_{name}_{write.output}_[{aov_name}_]v{version}.{SEQ}.exr"
     # root_name: "render"
   houdini_asset_render_pub:
-    definition: "@asset_render_publish/houdini/{name}/{write.output}/render/v{version}/[{aov_name}/]{Asset}_{Step}_{name}_{write.output}_[{aov_name}_]v{version}.{SEQ}.exr"
+    definition: "@asset_render_publish/{name}/{write.output}/render/v{version}/[{aov_name}/]{Asset}_{Step}_{name}_{write.output}_[{aov_name}_]v{version}.{SEQ}.exr"
   houdini_asset_render_review:
-    definition: "@asset_render_publish/houdini/{name}/{write.output}/review/v{version}/{Asset}_{Step}_{name}_{write.output}_v{version}.{SEQ}.exr"
-  houdini_asset_render_movie:
-    definition: "@asset_render_publish/houdini/{name}/{write.output}/mov/{Asset}_{Step}_{name}_{write.output}_sRGB_v{version}.mov"
+    definition: "@asset_render_publish/{name}/{write.output}/review/v{version}/{Asset}_{Step}_{name}_{write.output}_v{version}.{SEQ}.exr"
+  # houdini_asset_render_movie:
+  #   definition: "@asset_render_publish/{name}/{write.output}/mov/{Asset}_{Step}_{name}_{write.output}_sRGB_v{version}.mov"
 
   # Additional outputs
   houdini_asset_extra_plane:
-    definition: "@asset_root/houdini/renders/{name}/extra/v{version}/{aov_name}/{Asset}_{Step}_{name}_{aov_name}_v{version}.{SEQ}.exr"
+    definition: "@asset_root/renders/{name}/extra/v{version}/{aov_name}/{Asset}_{Step}_{name}_{aov_name}_v{version}.{SEQ}.exr"
     # root_name: "render"
 
   houdini_asset_ifd:
-    definition: "@asset_root/houdini/ifds/{name}/v{version}/{Asset}_{Step}_{name}_v{version}.{SEQ}.ifd"
+    definition: "@asset_root/ifds/{name}/v{version}/{Asset}_{Step}_{name}_v{version}.{SEQ}.ifd"
     # root_name: "render"
 
   houdini_asset_dcm:
-    definition: "@asset_root/houdini/dcms/{name}/v{version}/{Asset}_{Step}_{name}_v{version}.{SEQ}.dcm"
+    definition: "@asset_root/dcms/{name}/v{version}/{Asset}_{Step}_{name}_v{version}.{SEQ}.dcm"
     # root_name: "render"
 
   houdini_asset_ass:
-    definition: "@asset_root/houdini/ass/{name}/v{version}/{Asset}_{Step}_{name}_v{version}.{SEQ}.ass"
+    definition: "@asset_root/ass/{name}/v{version}/{Asset}_{Step}_{name}_v{version}.{SEQ}.ass"
     # root_name: "render"
 
 strings:
