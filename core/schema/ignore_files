@@ -8,7 +8,7 @@
 # control. This file makes it easy for Sgtk to ignore such files.
 #
 
-# placeholder
+placeholder
 
 # ignore mac files
 .DS_Store
