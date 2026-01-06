@@ -40,9 +40,6 @@ paths:
   # The location of backups of WIP files
   maya_shot_snapshot:
     definition: "@shot_root/snapshots/{Sequence}_{Shot}_{Step}_snap_{name}_v{version}_{timestamp}.{maya_extension}"
-  # The location of playblasts
-  maya_shot_playblast:
-    definition: "@shot_root/previews/{name}/{Sequence}_{Shot}_{name}_v{version}.mov"
   # The location of published maya files
   maya_shot_publish:
     definition: "@shot_publish/{Sequence}_{Shot}_{Step}_pub_{name}_v{version}.{maya_extension}"
