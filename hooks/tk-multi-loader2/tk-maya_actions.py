@@ -1,20 +1,19 @@
 # Copyright (c) 2015 Shotgun Software Inc.
-# ... (Header bleibt gleich) ...
 
 import os
-import re # WICHTIG: Für Regex Namespace Cleanup
+import re
 import sgtk
 import maya.cmds as cmds
 import maya.mel as mel
+import mayaUsd.lib
+import os
+import re
 
 HookBaseClass = sgtk.get_hook_baseclass()
 
 class MayaActions(HookBaseClass):
 
     def generate_actions(self, sg_publish_data, actions, ui_area):
-        # ... (dein bestehender Code hier ist gut) ...
-        # (Kopiere deinen generate_actions Code von oben hier rein)
-        app = self.parent
         action_instances = []
 
         if "reference" in actions:
@@ -34,7 +33,6 @@ class MayaActions(HookBaseClass):
             self.execute_action(single_action["name"], single_action["params"], single_action["sg_publish_data"])
 
     def execute_action(self, name, params, sg_publish_data):
-        app = self.parent
         # resolve path
         path = self.get_publish_path(sg_publish_data)
 
@@ -90,44 +88,90 @@ class MayaActions(HookBaseClass):
 
     def _create_usd_proxy_shape(self, path, sg_publish_data):
         """
-        Lädt USD als Proxy Shape (Der 'Reference'-Ersatz für USD).
+        Sucht die erste USD Stage und fügt das Asset KORREKT unter dem DefaultPrim (Shot) ein.
         """
         app = self.parent
         
-        # Plugin sicherstellen
+        # 1. Plugin laden
         if not cmds.pluginInfo('mayaUsdPlugin', query=True, loaded=True):
             try:
                 cmds.loadPlugin('mayaUsdPlugin')
-            except Exception as e:
-                # Fallback Versuch wie im vorherigen Chat besprochen
-                maya_ver = cmds.about(version=True)
-                fallback_path = f"C:/Program Files/Autodesk/Maya{maya_ver}/bin/plug-ins/mayaUsdPlugin.mll"
-                if os.path.exists(fallback_path):
-                    try:
-                        cmds.loadPlugin(fallback_path)
-                    except:
-                        app.log_error("Could not load mayaUsdPlugin.")
-                        return
-                else:
-                    app.log_error("Could not load mayaUsdPlugin.")
-                    return
+            except Exception:
+                app.log_error("Could not load mayaUsdPlugin.")
+                return
 
-        # Namen säubern
-        raw_name = sg_publish_data.get("code", os.path.basename(path))
-        safe_name = re.sub(r'[^a-zA-Z0-9_]', '_', raw_name)
-
-        # Nodes erstellen
-        transform = cmds.createNode('transform', name=safe_name)
-        shape = cmds.createNode('mayaUsdProxyShape', parent=transform, name=f"{safe_name}Shape")
-
-        # Pfad setzen (Slashes fixen für Maya)
-        cmds.setAttr(f"{shape}.filePath", path.replace("\\", "/"), type="string")
+        # 2. Stage finden (Alle suchen, erste nehmen)
+        all_stages = cmds.ls(type="mayaUsdProxyShape", long=True)
         
-        # Zeit verbinden
-        if not cmds.isConnected('time1.outTime', f"{shape}.time"):
-            cmds.connectAttr('time1.outTime', f"{shape}.time")
+        if not all_stages:
+            app.log_error("Keine USD Stage (Proxy Shape) in der Szene gefunden!")
+            return
+
+        proxy_shape_node = all_stages[0]
+        app.log_info(f"Nutze Stage: {proxy_shape_node}")
+
+        # 3. Stage Objekt holen
+        try:
+            stage = mayaUsd.lib.GetPrim(proxy_shape_node).GetStage()
+        except Exception as e:
+            app.log_error(f"Konnte Stage nicht abrufen: {e}")
+            return
+
+        # ---------------------------------------------------------------------
+        # 4. PFAD BERECHNUNG (HIER IST DER FIX)
+        # ---------------------------------------------------------------------
+        
+        # Standard-Fallback, falls die Stage leer ist
+        scope_path = "/Assets" 
+        
+        # Wir fragen die Stage: "Wer ist dein Chef?" (Default Prim)
+        # In deinem Fall ist das "sq010_sh010"
+        default_prim = stage.GetDefaultPrim()
+        
+        if default_prim and default_prim.IsValid():
+            # Das gibt uns den Pfad "/sq010_sh010"
+            root_path = default_prim.GetPath().pathString
             
-        cmds.select(transform)
+            # Wir hängen "/Assets" hinten dran -> "/sq010_sh010/Assets"
+            scope_path = f"{root_path}/Assets"
+            app.log_info(f"Füge Asset in Default Prim Struktur ein: {scope_path}")
+        else:
+            app.log_warning("Kein Default Prim gefunden! Erstelle Assets auf Root-Ebene.")
+
+        # ---------------------------------------------------------------------
+
+        # Namen vorbereiten
+        raw_name = sg_publish_data.get("code", os.path.basename(path))
+        raw_name = os.path.splitext(raw_name)[0]
+        asset_name = re.sub(r'[^a-zA-Z0-9_]', '_', raw_name)
+        
+        usd_file_path = path.replace("\\", "/")
+
+        # 5. Scope definieren (Erstellt /sq010_sh010/Assets falls nötig)
+        assets_prim = stage.DefinePrim(scope_path, "Scope")
+        
+        if not assets_prim.IsValid():
+            app.log_error(f"Konnte Scope {scope_path} nicht erstellen.")
+            return
+
+        # 6. Eindeutigen Namen finden
+        base_asset_path = f"{scope_path}/{asset_name}"
+        final_asset_path = base_asset_path
+        counter = 1
+        
+        while stage.GetPrimAtPath(final_asset_path).IsValid():
+            final_asset_path = f"{base_asset_path}_{counter}"
+            counter += 1
+
+        # 7. Referenz erstellen
+        new_prim = stage.DefinePrim(final_asset_path, "Xform")
+        
+        try:
+            references = new_prim.GetReferences()
+            references.AddReference(usd_file_path)
+            app.log_info(f"Referenz erstellt: {final_asset_path}")
+        except Exception as e:
+            app.log_error(f"Fehler beim Referenzieren: {e}")
 
     def _import(self, path, sg_publish_data):
         if not os.path.exists(path):
