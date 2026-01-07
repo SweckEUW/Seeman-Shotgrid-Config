@@ -185,8 +185,10 @@ class UsdLayerPublishPlugin(HookBaseClass):
 
         # Set Publish Path
         hda_node.parm("usd_export_path").set(publish_path)
-        hda_node.parm("usd_export_path").set("C:/Users/Simon/Desktop/test.usda")  # TEMPORARY HARD-CODED PATH FOR TESTING
+        # hda_node.parm("usd_export_path").set("C:/Users/Simon Weck/Desktop/test.usda")  # TEMPORARY HARD-CODED PATH FOR TESTING
 
+        self.logger.info(f"Set USD Export Path to: {publish_path}")
+        self.logger.info(f"Set Asset Name to: {asset_name}")
 
         # ... (Weiter mit Asset Name setzen und Rendern) ...
 
@@ -195,10 +197,9 @@ class UsdLayerPublishPlugin(HookBaseClass):
         # --------------------------------------------------
         try:
             self.logger.info(f"Rendering USD to: {publish_path}")
-            # Searches for the ROP Node INSIDE the HDA
-            rop_node = hda_node.node("rop_export")
-            
+
             # render
+            rop_node = hda_node.node("rop_export")
             rop_node.render()
         except Exception as e:
             self.logger.error(f"Export failed: {e}")
@@ -208,12 +209,12 @@ class UsdLayerPublishPlugin(HookBaseClass):
         # STEP B: Asset Stage Update (Merger)
         # --------------------------------------------------
         # Calls the helper function that edits the Master USD file
-        # self.update_stage_composition(item, publish_path, department)
+        self.update_stage_composition(item, publish_path, department)
 
         # --------------------------------------------------
         # STEP C: Register in ShotGrid Database
         # --------------------------------------------------
-        # self._register_publish(item, publish_path, version_number)
+        self._register_publish(item, publish_path, version_number)
 
     def finalize(self, settings, item):
         """
@@ -247,12 +248,20 @@ class UsdLayerPublishPlugin(HookBaseClass):
         """
         # Load template for the master file
         tmpl_stage = self.sgtk.templates.get("asset_stage_file")
+        self.logger.info(f"Loading Stage Template: {tmpl_stage}")
+
         if not tmpl_stage:
             self.logger.warning("Template 'asset_stage_file' missing. Skipping Stage Update.")
             return
 
         # Calculate path for the master file
         fields = item.context.as_template_fields(tmpl_stage)
+
+        # Workarround when "Asset" is not in context. TODO: Fix this properly.
+        asset_name = item.properties.get("asset_name", "Asset")
+        if "Asset" not in fields:
+            fields["Asset"] = asset_name
+
         stage_path = tmpl_stage.apply_fields(fields)
         asset_name = item.properties.get("asset_name", fields.get("Asset", "Asset"))
         
@@ -299,7 +308,7 @@ class UsdLayerPublishPlugin(HookBaseClass):
 
         # Calculate relative path (USD prefers relative paths over absolute)
         rel_path = os.path.relpath(new_layer_path, os.path.dirname(stage_path))
-        rel_path = rel_path.replace("\\", "/") 
+        rel_path = rel_path.replace("/", "/") 
 
         # --- REFERENCES UPDATE LOGIC ---
         refs = prim.referenceList
