@@ -93,7 +93,7 @@ class SceneOperation(Hook):
             return None
     
         # --- 2. SHOT DATEI ERSTELLEN (COPY BASE) ---
-        usd_shot_base = "C:/Users/Simon Weck/Desktop/Shot.usda" 
+        usd_shot_base = "X:/Projekte/MedienprojektSeemann/Seacarus/00_pipeline/Shot.usda" 
         
         if not os.path.exists(shot_usd_path):
             self.logger.info(f"Erstelle Shot Stage aus Base File: {shot_usd_path}")
@@ -142,7 +142,7 @@ class SceneOperation(Hook):
 
 
         # --- 4. LAYOUT DATEI ERSTELLEN ---
-        layout_base = "C:/Users/Simon Weck/Desktop/Layout.usda"
+        layout_base = "X:/Projekte/MedienprojektSeemann/Seacarus/00_pipeline/Layout.usda"
         publish_template = self.sgtk.templates.get("shot_publish")
 
         if publish_template:
