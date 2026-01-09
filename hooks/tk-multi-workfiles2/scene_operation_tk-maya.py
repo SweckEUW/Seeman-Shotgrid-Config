@@ -33,6 +33,9 @@ class SceneOperation(Hook):
             if context.entity and context.entity["type"] == "Shot":
                 self.logger.info("Shot Context erkannt. Starte USD Setup...")
                 cmds.file(newFile=True, force=True)
+
+                # Setup Scene
+                cmds.currentUnit(linear='m')
                 
                 # --- ÄNDERUNG: Wir holen uns den Pfad aus der Setup-Funktion ---
                 generated_usd_path = self._setup_usd_shot_structure(context)
