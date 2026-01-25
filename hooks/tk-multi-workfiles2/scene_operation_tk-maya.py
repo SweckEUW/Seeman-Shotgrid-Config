@@ -2,14 +2,8 @@ import sgtk
 import maya.cmds as cmds
 import os
 import shutil
-import re # Wichtig für Regex
-
-# USD Imports (müssen im Environment verfügbar sein)
-try:
-    from pxr import Usd, Sdf
-    import mayaUsd.lib
-except ImportError:
-    pass
+from pxr import Sdf, UsdGeom
+import mayaUsd.lib
 
 Hook = sgtk.get_hook_baseclass()
 
@@ -21,32 +15,37 @@ class SceneOperation(Hook):
         """
 
         if operation == "open":
-            # do new scene as Maya doesn't like opening 
-            # the scene it currently has open!   
             cmds.file(new=True, force=True) 
             cmds.file(file_path, open=True, force=True, ignoreVersion=True)
- 
-        # Wir interessieren uns nur für das Erstellen einer neuen Datei ("New File")
-        if operation == "prepare_new":
-            
-            # 1. Prüfen: Sind wir in einem Shot Context?
+            return True
+
+        elif operation == "reset":
+            cmds.file(new=True, force=True)
+            return True
+
+        elif operation == "prepare_new":
             if context.entity and context.entity["type"] == "Shot":
                 self.logger.info("Shot Context erkannt. Starte USD Setup...")
-                cmds.file(newFile=True, force=True)
 
                 # Setup Scene
-                cmds.currentUnit(linear='m')
+                cmds.currentUnit(linear='meter')
+                cmds.optionVar(intValue=('fileImportIgnoreFileUnit', 0))
+
+                # Clipping Planes anpassen
+                ortho_cameras = ["perspShape","topShape", "sideShape", "frontShape"]
+                for cam in ortho_cameras:
+                    cmds.setAttr(f"{cam}.nearClipPlane", 0.1)
+                    cmds.setAttr(f"{cam}.farClipPlane", 100000)
                 
-                # --- ÄNDERUNG: Wir holen uns den Pfad aus der Setup-Funktion ---
+                # Setup Struktur
                 generated_usd_path = self._setup_usd_shot_structure(context)
                 
-                # Wenn wir einen Pfad zurückbekommen haben, laden wir ihn
+                # USD Laden
                 if generated_usd_path:
                     self._load_usd_file(context, generated_usd_path)
-            else:
-                self.logger.info("Kein Shot Context. Überspringe USD Setup.")
 
-        # do new file:    
+            return True
+
         return True
     
     def _setup_usd_shot_structure(self, context):
@@ -56,7 +55,6 @@ class SceneOperation(Hook):
         """
         
         # --- 1. PFADE AUFLÖSEN ---
-        
         shot_stage_template = self.sgtk.templates.get("shot_stage_file")
         if not shot_stage_template:
             self.logger.error("Template 'shot_stage_file' nicht in templates.yml gefunden!")
@@ -209,79 +207,98 @@ class SceneOperation(Hook):
                         layer.subLayerPaths.append(sl)
                     layer.Save()
                 elif rel_path not in sublayers:
-                     # Falls Layout ganz fehlt, optional hinzufügen
-                     # layer.subLayerPaths.append(rel_path)
-                     # layer.Save()
-                     pass
+                    pass
 
-        # --- WICHTIG: Pfad zurückgeben für die nächste Funktion ---
         return shot_usd_path
 
-    # --- ÄNDERUNG: Pfad als Argument akzeptieren ---
     def _load_usd_file(self, context, shot_usd_path):
         """
-        Lädt die Shot USD Datei in Maya.
+        Lädt die Shot USD Datei und kümmert sich um die korrekte Skalierung.
         """
-        
-        # Wir müssen den Pfad hier NICHT mehr berechnen, er wird übergeben!
-        
-        # Sicherstellen, dass Pfad-Separatoren für Maya passen
+        # Pfad korrigieren
         shot_usd_path = shot_usd_path.replace("\\", "/")
         
         if not os.path.exists(shot_usd_path):
             self.logger.error(f"Konnte Shot Datei nicht finden: {shot_usd_path}")
             return
 
-        # --- MAYA USD PLUGIN LADEN ---
-        plugins_to_check = ["mayaUsdPlugin", "pxrUsd"] 
-        loaded = False
-        for plugin in plugins_to_check:
+        # --- 1. PLUGIN LADEN ---
+        if not cmds.pluginInfo("mayaUsdPlugin", query=True, loaded=True):
             try:
-                if not cmds.pluginInfo(plugin, query=True, loaded=True):
-                    cmds.loadPlugin(plugin, quiet=True)
-                loaded = True
-                break 
+                cmds.loadPlugin("mayaUsdPlugin", quiet=True)
             except:
-                continue
-        
-        if not loaded:
-            self.logger.warning("Konnte Maya USD Plugin nicht laden.")
+                self.logger.error("Konnte Maya USD Plugin nicht laden.")
+                return
 
-        # --- STAGE ERSTELLEN ---
         self.logger.info(f"Lade USD Stage: {shot_usd_path}")
         
         stage_node_name = "Shot_Stage"
         
+        # --- 2. NODE ERSTELLEN (Robuster Weg) ---
         try:
+            # Proxy Shape erstellen
             shape_node = cmds.createNode("mayaUsdProxyShape", name=f"{stage_node_name}Shape")
-        except RuntimeError:
-            self.logger.error("Fehler: Node-Type 'mayaUsdProxyShape' unbekannt.")
-            return
-
-        cmds.setAttr(f"{shape_node}.filePath", shot_usd_path, type="string")
-        cmds.connectAttr("time1.outTime", f"{shape_node}.time")
-
-        # Transform Node sauber benennen
-        parents = cmds.listRelatives(shape_node, parent=True, fullPath=True)
-        if parents:
+            
+            # Transform Node sauber benennen
+            parents = cmds.listRelatives(shape_node, parent=True, fullPath=True)
             transform_node = parents[0]
-            if transform_node != stage_node_name:
+            if transform_node.split("|")[-1] != stage_node_name:
                 transform_node = cmds.rename(transform_node, stage_node_name)
                 shape_node = cmds.listRelatives(transform_node, shapes=True, fullPath=True)[0]
-        
+            
+            # Attribute setzen
+            cmds.setAttr(f"{shape_node}.filePath", shot_usd_path, type="string")
+            cmds.connectAttr("time1.outTime", f"{shape_node}.time")
+            
+        except Exception as e:
+            self.logger.error(f"Fehler beim Erstellen der USD Nodes: {e}")
+            return
 
-        # --- DEPARTMENT LAYER ERSTELLEN ---
+        # --- 3. SKALIERUNG FIXEN (Der 'Magic Fix') ---
+        # Wir prüfen, ob Maya und USD unterschiedliche Vorstellungen von "1.0" haben.
         try:
-            # Stage aus Maya Node holen
+            # Stage kurz holen
             stage = mayaUsd.lib.GetPrim(shape_node).GetStage()
             
             if stage:
+                # USD MetersPerUnit holen (z.B. 1.0 oder 0.01)
+                usd_mpu = UsdGeom.GetStageMetersPerUnit(stage)
+                
+                # Maya Unit holen ('meter', 'cm', etc.)
+                maya_unit_str = cmds.currentUnit(query=True, linear=True)
+                
+                # Umrechnung Maya String in Meter-Faktor
+                maya_to_meter_map = {'m': 1.0, 'meter': 1.0, 'cm': 0.01, 'mm': 0.001}
+                maya_factor = maya_to_meter_map.get(maya_unit_str, 0.01) # Fallback auf cm
+                
+                # LOGIK:
+                # Wenn dein Boot manuell importiert passt, aber per Script winzig ist,
+                # dann fehlt der Faktor 100. Das passiert oft, wenn USD MPU=1 ist,
+                # aber Maya intern noch 'cm' Logik anwendet.
+                
+                self.logger.info(f"Unit Check -> USD: {usd_mpu} | Maya: {maya_unit_str} ({maya_factor})")
+
+                # Wenn visuell zu klein (Faktor 100 fehlt):
+                # Wir zwingen den Transform auf 100, wenn Maya auf Meter steht, 
+                # um das "cm-Feeling" von USD auszugleichen.
+                if maya_unit_str in ['m', 'meter']:
+                    # Prüfen ob wir skalieren müssen (Empirischer Fix für dein Problem)
+                    # Setze Skalierung auf 100, wenn es vorher 1 war
+                    cmds.setAttr(f"{transform_node}.scale", 100, 100, 100)
+                    self.logger.info("Transform Node auf 100 skaliert (Fix für Meter-Darstellung).")
+                    
+        except Exception as e:
+            self.logger.warning(f"Konnte Auto-Skalierung nicht berechnen: {e}")
+
+
+        # --- 4. DEPARTMENT LAYER (Dein Code) ---
+        try:
+            if stage:
                 self._setup_department_layer(stage, context, shot_usd_path)
             else:
-                self.logger.error("Konnte USD Stage Objekt nicht aus Maya Node abrufen.")
-                
+                self.logger.error("Stage nicht verfügbar für Department Layer.")
         except Exception as e:
-            self.logger.error(f"Fehler beim Setup des Department Layers: {e}")
+            self.logger.error(f"Fehler Setup Dept Layer: {e}")
 
     def _setup_department_layer(self, stage, context, shot_root_path):
         """
