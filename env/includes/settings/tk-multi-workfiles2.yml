@@ -141,6 +141,7 @@ settings.tk-multi-workfiles2.houdini.asset_step:
   template_work: houdini_asset_work
   template_work_area: asset_root
   show_my_tasks: false
+  auto_expand_tree: true
   entities:
   - caption: Assets
     entity_type: Asset
@@ -170,20 +171,21 @@ settings.tk-multi-workfiles2.houdini.shot_step:
   template_work: houdini_shot_work
   template_work_area: shot_root
   show_my_tasks: false
+  auto_expand_tree: true
   entities:
-  - caption: Assets
-    entity_type: Asset
-    hierarchy: [sg_asset_type, code]
+  - caption: Shots
+    entity_type: Shot
     filters:
+    hierarchy: [sg_sequence, code]
     sub_hierarchy:
       entity_type: Task
       filters:
       link_field: entity
       hierarchy: [step]
-  - caption: Shots
-    entity_type: Shot
+  - caption: Assets
+    entity_type: Asset
+    hierarchy: [sg_asset_type, code]
     filters:
-    hierarchy: [sg_sequence, code]
     sub_hierarchy:
       entity_type: Task
       filters:
@@ -196,6 +198,33 @@ settings.tk-multi-workfiles2.houdini.shot_step:
 
 # ---- Maya
 
+# Maya launches at startup.
+settings.tk-multi-workfiles2.maya.launch_at_startup:
+  launch_at_startup: true
+  show_my_tasks: false
+  auto_expand_tree: true
+  hook_scene_operation: "{config}/tk-multi-workfiles2/scene_operation_tk-maya.py"
+  entities:
+  - caption: Shots
+    entity_type: Shot
+    filters:
+    hierarchy: [sg_sequence, code]
+    sub_hierarchy:
+      entity_type: Task
+      filters:
+      link_field: entity
+      hierarchy: [step]
+  - caption: Assets
+    entity_type: Asset
+    hierarchy: [sg_asset_type, code]
+    filters:
+    sub_hierarchy:
+      entity_type: Task
+      filters:
+      link_field: entity
+      hierarchy: [step]
+  location: "@apps.tk-multi-workfiles2.location"
+
 # asset_step
 settings.tk-multi-workfiles2.maya.asset_step:
   show_my_tasks: false
@@ -203,7 +232,6 @@ settings.tk-multi-workfiles2.maya.asset_step:
   template_publish_area: asset_publish
   template_work: maya_asset_work
   template_work_area: asset_root
-  hook_scene_operation: "{config}/tk-multi-workfiles2/scene_operation_tk-maya.py"
   entities:
   - caption: Assets
     entity_type: Asset
@@ -235,19 +263,19 @@ settings.tk-multi-workfiles2.maya.shot_step:
   template_work_area: shot_root
   hook_scene_operation: "{config}/tk-multi-workfiles2/scene_operation_tk-maya.py"
   entities:
-  - caption: Assets
-    entity_type: Asset
-    hierarchy: [sg_asset_type, code]
+  - caption: Shots
+    entity_type: Shot
     filters:
+    hierarchy: [sg_sequence, code]
     sub_hierarchy:
       entity_type: Task
       filters:
       link_field: entity
       hierarchy: [step]
-  - caption: Shots
-    entity_type: Shot
+  - caption: Assets
+    entity_type: Asset
+    hierarchy: [sg_asset_type, code]
     filters:
-    hierarchy: [sg_sequence, code]
     sub_hierarchy:
       entity_type: Task
       filters:
@@ -293,19 +321,19 @@ settings.tk-multi-workfiles2.nuke.shot_step:
   template_work: nuke_shot_work
   template_work_area: shot_root
   entities:
-  - caption: Assets
-    entity_type: Asset
-    hierarchy: [sg_asset_type, code]
+  - caption: Shots
+    entity_type: Shot
     filters:
+    hierarchy: [sg_sequence, code]
     sub_hierarchy:
       entity_type: Task
       filters:
       link_field: entity
       hierarchy: [step]
-  - caption: Shots
-    entity_type: Shot
+  - caption: Assets
+    entity_type: Asset
+    hierarchy: [sg_asset_type, code]
     filters:
-    hierarchy: [sg_sequence, code]
     sub_hierarchy:
       entity_type: Task
       filters:
