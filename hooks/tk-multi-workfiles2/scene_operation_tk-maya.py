@@ -18,6 +18,22 @@ class SceneOperation(Hook):
             cmds.file(new=True, force=True) 
             cmds.file(file_path, open=True, force=True, ignoreVersion=True)
             return True
+        
+        elif operation == "save":
+            cmds.file(save=True)
+
+        elif operation == "save_as":
+            cmds.file(rename=file_path)
+            maya_file_type = None
+            if file_path.lower().endswith(".ma"):
+                maya_file_type = "mayaAscii"
+            elif file_path.lower().endswith(".mb"):
+                maya_file_type = "mayaBinary"
+            
+            if maya_file_type:
+                cmds.file(save=True, force=True, type=maya_file_type)
+            else:
+                cmds.file(save=True, force=True)
 
         elif operation == "reset":
             cmds.file(new=True, force=True)
@@ -30,7 +46,8 @@ class SceneOperation(Hook):
                 # Setup Scene
                 cmds.currentUnit(linear='meter')
                 cmds.optionVar(intValue=('fileImportIgnoreFileUnit', 0))
-
+                cmds.grid(size=200, spacing=1.0, divisions=1)
+                
                 # Clipping Planes anpassen
                 ortho_cameras = ["perspShape","topShape", "sideShape", "frontShape"]
                 for cam in ortho_cameras:
