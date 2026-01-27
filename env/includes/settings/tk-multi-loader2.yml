@@ -19,9 +19,7 @@ includes:
 settings.tk-multi-loader2.houdini:
   actions_hook: "{config}/tk-multi-loader2/tk-houdini_actions.py"
   action_mappings:
-    Alembic Cache: [import, stage_import]
-    Houdini Scene: [merge]
-    animation: [usd_reference]
+    USD Asset: [reference]
   entities:
     - caption: Assets
       entity_type: Asset
@@ -40,14 +38,8 @@ settings.tk-multi-loader2.houdini:
 settings.tk-multi-loader2.maya:
   actions_hook: "{config}/tk-multi-loader2/tk-maya_actions.py"
   action_mappings:
-    Alembic Cache: [reference]
-    Motion Builder FBX: [reference]
     USD Asset: [reference]
-    Image: [texture_node, image_plane]
     Maya Scene: [reference]
-    Photoshop Image: [texture_node, image_plane]
-    Rendered Image: [texture_node, image_plane]
-    Texture: [texture_node, image_plane]
   entities:
     - caption: Assets
       entity_type: Asset
