@@ -101,13 +101,12 @@ paths:
   # Stage Paths
   asset_stage: 03_stage/assets/{Asset}
   shot_stage: 03_stage/shots/{Sequence}/{Shot}
-  asset_stage_file: "@asset_stage/{Asset}.usda"
+  asset_stage_file: "@asset_stage/{Asset}_v{version}.usda"
   shot_stage_file: "@shot_stage/{Sequence}/{Shot}.usda"
 
   # Render Paths
   asset_render_publish: 04_renders/assets/{Asset}/{Step}
   shot_render_publish: 04_renders/shots/{Sequence}/{Shot}/{Step}
-
 
 
   ##########################################################################################
