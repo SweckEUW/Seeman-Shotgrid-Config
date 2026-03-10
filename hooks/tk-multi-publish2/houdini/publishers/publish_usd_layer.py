@@ -329,6 +329,7 @@ class UsdLayerPublishPlugin(HookBaseClass):
         layer.timeCodesPerSecond = 24.0
         layer.upAxis = UsdGeom.Tokens.y 
         layer.defaultPrim = asset_name
+        layer.metersPerUnit = 1.0
 
         # Prim (Xform) holen oder erstellen
         prim_path = Sdf.Path(f"/{asset_name}")
