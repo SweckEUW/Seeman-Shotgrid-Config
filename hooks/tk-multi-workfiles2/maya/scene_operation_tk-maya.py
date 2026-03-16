@@ -2,8 +2,9 @@ import sgtk
 import maya.cmds as cmds
 import os
 import shutil
-from pxr import Sdf, UsdGeom
-import mayaUsd.lib
+from pxr import Sdf
+import mayaUsd.lib as mayaUsdLib
+import mayaUsdStageConversion
 
 Hook = sgtk.get_hook_baseclass()
 
@@ -210,47 +211,42 @@ class SceneOperation(Hook):
         Loads the Shot USD file. 
         Returns: The name of the created Shape Node (String) or None.
         """
-        # Correct path
+        # Fix path
         shot_usd_path = shot_usd_path.replace("\\", "/")
         
         if not os.path.exists(shot_usd_path):
             self.logger.error(f"Could not find Shot file: {shot_usd_path}")
             return None
 
-        # --- 1. LOAD PLUGIN ---
-        if not cmds.pluginInfo("mayaUsdPlugin", query=True, loaded=True):
-            try:
-                cmds.loadPlugin("mayaUsdPlugin", quiet=True)
-            except:
-                self.logger.error("Could not load Maya USD Plugin.")
-                return None
+        # Load plugin
+        if not cmds.pluginInfo("mayaUsdPlugin", query=True, loaded=True): cmds.loadPlugin("mayaUsdPlugin", quiet=True)
 
         self.logger.info(f"Loading USD Stage: {shot_usd_path}")
         
         stage_node_name = "Shot_Stage"
         
-        # Old cleanup if necessary (since we do reset, usually not needed, but just to be safe)
-        if cmds.objExists(stage_node_name):
-            cmds.delete(stage_node_name)
+        # Cleanup
+        if cmds.objExists(stage_node_name): cmds.delete(stage_node_name)
 
-        # --- 2. CREATE NODE ---
         try:
-            # Create Proxy Shape
+            # Create proxy shape
             shape_node = cmds.createNode("mayaUsdProxyShape", name=f"{stage_node_name}Shape")
             
-            # Cleanly name Transform Node
+            # Rename transform
             parents = cmds.listRelatives(shape_node, parent=True, fullPath=True)
             transform_node = parents[0]
             cmds.rename(transform_node, stage_node_name)
             
-            # Retreive Shape name again after rename
+            # Get shape
             shape_node = cmds.listRelatives(stage_node_name, shapes=True, fullPath=True)[0]
             
-            # Set attributes
+            # Set attrs
             cmds.setAttr(f"{shape_node}.filePath", shot_usd_path, type="string")
             cmds.connectAttr("time1.outTime", f"{shape_node}.time")
             
-            # Return Shape Node for the next step
+            # Auto-convert axis & units
+            mayaUsdStageConversion.convertUpAxisAndUnit(shape_node, True, True, "rotateScale")
+            
             return shape_node
             
         except Exception as e:
