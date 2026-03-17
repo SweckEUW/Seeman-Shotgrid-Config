@@ -4,7 +4,6 @@ import os
 import shutil
 from pxr import Sdf
 import mayaUsd.lib as mayaUsdLib
-import mayaUsdStageConversion
 
 Hook = sgtk.get_hook_baseclass()
 
@@ -221,6 +220,13 @@ class SceneOperation(Hook):
         # Load plugin
         if not cmds.pluginInfo("mayaUsdPlugin", query=True, loaded=True): cmds.loadPlugin("mayaUsdPlugin", quiet=True)
 
+        # Maya 2025 may not provide this module; keep conversion optional.
+        try:
+            import mayaUsdStageConversion
+        except ImportError:
+            mayaUsdStageConversion = None
+            self.logger.info("mayaUsdStageConversion not available (expected in Maya 2025). Skipping axis/unit auto-conversion.")
+
         self.logger.info(f"Loading USD Stage: {shot_usd_path}")
         
         stage_node_name = "Shot_Stage"
@@ -245,7 +251,8 @@ class SceneOperation(Hook):
             cmds.connectAttr("time1.outTime", f"{shape_node}.time")
             
             # Auto-convert axis & units
-            mayaUsdStageConversion.convertUpAxisAndUnit(shape_node, True, True, "rotateScale")
+            if mayaUsdStageConversion:
+                mayaUsdStageConversion.convertUpAxisAndUnit(shape_node, True, True, "rotateScale")
             
             return shape_node
             
@@ -262,7 +269,7 @@ class SceneOperation(Hook):
 
         # Get Stage
         try:
-            stage = mayaUsd.lib.GetPrim(shape_node).GetStage()
+            stage = mayaUsdLib.GetPrim(shape_node).GetStage()
         except Exception:
             self.logger.error("Could not retrieve Stage from Shape Node.")
             return
