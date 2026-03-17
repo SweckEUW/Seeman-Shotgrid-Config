@@ -17,7 +17,7 @@
 engines.tk-desktop.location:
   type: app_store
   name: tk-desktop
-  version: v.2.8.0
+  version: v2.8.1
   
 # Desktop2
 engines.tk-desktop2.location:
