@@ -221,13 +221,16 @@ class SceneOperation(Hook):
         if not cmds.pluginInfo("mayaUsdPlugin", query=True, loaded=True): cmds.loadPlugin("mayaUsdPlugin", quiet=True)
 
         # Maya 2025 may not provide this module; keep conversion optional.
-        # try:
-        #     import mayaUsdStageConversion
-        # except ImportError:
-        #     mayaUsdStageConversion = None
-        #     self.logger.info("mayaUsdStageConversion not available (expected in Maya 2025). Skipping axis/unit auto-conversion.")
+        try:
+            import mayaUsdStageConversion
+        except ImportError:
+            mayaUsdStageConversion = None
+            self.logger.info("mayaUsdStageConversion not available (expected in Maya 2025). Using fallback conversion.")
 
         self.logger.info(f"Loading USD Stage: {shot_usd_path}")
+
+        stage_up_axis, meters_per_unit = self._read_usd_stage_metrics(shot_usd_path)
+        self._fallback_sync_scene_axis_and_units(stage_up_axis, meters_per_unit)
         
         stage_node_name = "Shot_Stage"
         
@@ -254,7 +257,7 @@ class SceneOperation(Hook):
             # if mayaUsdStageConversion:
             #     mayaUsdStageConversion.convertUpAxisAndUnit(shape_node, True, True, "rotateScale")
             # else:
-            self._fallback_sync_scene_axis_and_units_from_usd(shot_usd_path)
+            self._apply_maya2025_stage_scale_workaround(stage_node_name, meters_per_unit)
             
             return shape_node
             
@@ -262,25 +265,32 @@ class SceneOperation(Hook):
             self.logger.error(f"Error creating USD nodes: {e}")
             return None
 
-    def _fallback_sync_scene_axis_and_units_from_usd(self, usd_path):
+    def _read_usd_stage_metrics(self, usd_path):
         """
-        Maya 2025 fallback: if mayaUsdStageConversion is unavailable, read
-        stage metadata and align Maya scene up-axis + linear units.
+        Reads up-axis and metersPerUnit metadata from a USD stage.
         """
         try:
             stage = Usd.Stage.Open(usd_path)
             if not stage:
-                self.logger.warning("Fallback skipped: could not open USD stage for unit/axis sync.")
-                return
+                self.logger.warning("Could not open USD stage for metadata read.")
+                return None, None
 
+            return UsdGeom.GetStageUpAxis(stage), UsdGeom.GetStageMetersPerUnit(stage)
+        except Exception as e:
+            self.logger.warning(f"Could not read USD stage metadata: {e}")
+            return None, None
+
+    def _fallback_sync_scene_axis_and_units(self, stage_up_axis, meters_per_unit):
+        """
+        Maya fallback: align Maya scene up-axis + linear units from USD metadata.
+        """
+        try:
             # Sync up-axis (Y/Z)
-            stage_up_axis = UsdGeom.GetStageUpAxis(stage)
             current_up_axis = cmds.upAxis(query=True, axis=True)
             if stage_up_axis in ("y", "z") and current_up_axis != stage_up_axis:
                 cmds.upAxis(axis=stage_up_axis, rotateView=True)
 
             # Sync linear units based on metersPerUnit metadata.
-            meters_per_unit = UsdGeom.GetStageMetersPerUnit(stage)
             maya_linear_unit = self._meters_to_maya_linear_unit(meters_per_unit)
             if maya_linear_unit:
                 current_linear_unit = cmds.currentUnit(query=True, linear=True)
@@ -288,10 +298,40 @@ class SceneOperation(Hook):
                     cmds.currentUnit(linear=maya_linear_unit)
 
             self.logger.info(
-                f"Maya 2025 fallback applied: upAxis={stage_up_axis}, metersPerUnit={meters_per_unit}."
+                f"Fallback axis/unit sync applied: upAxis={stage_up_axis}, metersPerUnit={meters_per_unit}."
             )
         except Exception as e:
-            self.logger.warning(f"Maya 2025 fallback failed: {e}")
+            self.logger.warning(f"Fallback axis/unit sync failed: {e}")
+
+    def _apply_maya2025_stage_scale_workaround(self, stage_node_name, meters_per_unit):
+        """
+        Maya 2025 workaround for missing distance conversion support in mayaUsd.
+        Applies a uniform scale on the stage transform to compensate.
+        """
+        try:
+            if meters_per_unit is None:
+                self.logger.warning("Scale workaround skipped: metersPerUnit is unavailable.")
+                return
+
+            maya_internal_meters = 0.01  # Maya internal linear unit is centimeters.
+            scale_factor = meters_per_unit / maya_internal_meters
+
+            # Keep identity when already in cm-authored USD.
+            if abs(scale_factor - 1.0) < 1e-8:
+                return
+
+            if not cmds.objExists(stage_node_name):
+                self.logger.warning("Scale workaround skipped: stage transform not found.")
+                return
+
+            cmds.setAttr(f"{stage_node_name}.scaleX", scale_factor)
+            cmds.setAttr(f"{stage_node_name}.scaleY", scale_factor)
+            cmds.setAttr(f"{stage_node_name}.scaleZ", scale_factor)
+            self.logger.info(
+                f"Applied Maya 2025 stage scale workaround: factor={scale_factor} (metersPerUnit={meters_per_unit})."
+            )
+        except Exception as e:
+            self.logger.warning(f"Scale workaround failed: {e}")
 
     def _meters_to_maya_linear_unit(self, meters_per_unit):
         """
