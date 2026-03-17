@@ -34,20 +34,34 @@ class SceneOperation(Hook):
             return True
 
         elif operation == "prepare_new":
+            # Load Maya Preset and save as tmp.mb in same directory
+            preset_path = "X:/Projekte/MedienprojektSeemann/Seacarus/00_pipeline/maya/Maya_Preset.mb"
+            preset_path = preset_path.replace("\\", "/")
+            
+            if os.path.exists(preset_path):
+                try:
+                    # Open preset file
+                    cmds.file(preset_path, open=True, force=True)
+                    self.logger.info(f"Opened Maya Preset: {preset_path}")
+                    
+                    # Save as tmp.mb in same directory
+                    preset_dir = os.path.dirname(preset_path)
+                    tmp_path = os.path.join(preset_dir, "tmp.mb").replace("\\", "/")
+                    cmds.file(rename=tmp_path)
+                    cmds.file(save=True, force=True, type="mayaBinary")
+                    self.logger.info(f"Saved as tmp to: {tmp_path}")
+                    
+                except Exception as e:
+                    self.logger.error(f"Error opening/saving preset: {e}")
+                    cmds.file(new=True, force=True)
+            else:
+                self.logger.warning(f"Maya Preset not found: {preset_path}")
+                cmds.file(new=True, force=True)
+            
             step_name = context.step["name"] if context.step else ""
             if context.entity and context.entity["type"] == "Shot" and step_name == "Animation": # Only run for Animation step in Shots
                 self.logger.info(f"Animation Task detected for {context.entity['name']}. Starting USD Setup...")
 
-                # Adjust Maya Settings
-                # ortho_cameras = ["perspShape", "topShape", "sideShape", "frontShape"]
-                # for cam in ortho_cameras:
-                #     if cmds.objExists(cam):
-                #         cmds.setAttr(f"{cam}.nearClipPlane", 0.1)
-                #         cmds.setAttr(f"{cam}.farClipPlane", 100000)
-                # cmds.currentUnit(linear='meter')
-                # cmds.optionVar(category='Settings', stringValue=('workingUnitLinear', 'm'))
-                # cmds.savePrefs(general=True)
-                        
                 # 1. Setup USD Structure (Copy USD Shot Base & Layout file to correct locations)
                 generated_usd_path = self._setup_usd_shot_structure(context)
                 
