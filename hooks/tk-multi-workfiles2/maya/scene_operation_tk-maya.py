@@ -2,7 +2,7 @@ import sgtk
 import maya.cmds as cmds
 import os
 import shutil
-from pxr import Sdf
+from pxr import Sdf, Usd, UsdGeom
 import mayaUsd.lib as mayaUsdLib
 
 Hook = sgtk.get_hook_baseclass()
@@ -221,11 +221,11 @@ class SceneOperation(Hook):
         if not cmds.pluginInfo("mayaUsdPlugin", query=True, loaded=True): cmds.loadPlugin("mayaUsdPlugin", quiet=True)
 
         # Maya 2025 may not provide this module; keep conversion optional.
-        try:
-            import mayaUsdStageConversion
-        except ImportError:
-            mayaUsdStageConversion = None
-            self.logger.info("mayaUsdStageConversion not available (expected in Maya 2025). Skipping axis/unit auto-conversion.")
+        # try:
+        #     import mayaUsdStageConversion
+        # except ImportError:
+        #     mayaUsdStageConversion = None
+        #     self.logger.info("mayaUsdStageConversion not available (expected in Maya 2025). Skipping axis/unit auto-conversion.")
 
         self.logger.info(f"Loading USD Stage: {shot_usd_path}")
         
@@ -251,14 +251,68 @@ class SceneOperation(Hook):
             cmds.connectAttr("time1.outTime", f"{shape_node}.time")
             
             # Auto-convert axis & units
-            if mayaUsdStageConversion:
-                mayaUsdStageConversion.convertUpAxisAndUnit(shape_node, True, True, "rotateScale")
+            # if mayaUsdStageConversion:
+            #     mayaUsdStageConversion.convertUpAxisAndUnit(shape_node, True, True, "rotateScale")
+            # else:
+            self._fallback_sync_scene_axis_and_units_from_usd(shot_usd_path)
             
             return shape_node
             
         except Exception as e:
             self.logger.error(f"Error creating USD nodes: {e}")
             return None
+
+    def _fallback_sync_scene_axis_and_units_from_usd(self, usd_path):
+        """
+        Maya 2025 fallback: if mayaUsdStageConversion is unavailable, read
+        stage metadata and align Maya scene up-axis + linear units.
+        """
+        try:
+            stage = Usd.Stage.Open(usd_path)
+            if not stage:
+                self.logger.warning("Fallback skipped: could not open USD stage for unit/axis sync.")
+                return
+
+            # Sync up-axis (Y/Z)
+            stage_up_axis = UsdGeom.GetStageUpAxis(stage)
+            current_up_axis = cmds.upAxis(query=True, axis=True)
+            if stage_up_axis in ("y", "z") and current_up_axis != stage_up_axis:
+                cmds.upAxis(axis=stage_up_axis, rotateView=True)
+
+            # Sync linear units based on metersPerUnit metadata.
+            meters_per_unit = UsdGeom.GetStageMetersPerUnit(stage)
+            maya_linear_unit = self._meters_to_maya_linear_unit(meters_per_unit)
+            if maya_linear_unit:
+                current_linear_unit = cmds.currentUnit(query=True, linear=True)
+                if current_linear_unit != maya_linear_unit:
+                    cmds.currentUnit(linear=maya_linear_unit)
+
+            self.logger.info(
+                f"Maya 2025 fallback applied: upAxis={stage_up_axis}, metersPerUnit={meters_per_unit}."
+            )
+        except Exception as e:
+            self.logger.warning(f"Maya 2025 fallback failed: {e}")
+
+    def _meters_to_maya_linear_unit(self, meters_per_unit):
+        """
+        Converts USD metersPerUnit values to Maya linear unit tokens.
+        """
+        # Common values in USD pipelines. Tolerance allows tiny float noise.
+        candidates = [
+            (1.0, "m"),
+            (0.01, "cm"),
+            (0.001, "mm"),
+            (0.1, "dm"),
+            (0.3048, "ft"),
+            (0.0254, "in"),
+        ]
+
+        tolerance = 1e-8
+        for value, maya_unit in candidates:
+            if abs(meters_per_unit - value) <= tolerance:
+                return maya_unit
+
+        return None
 
     def _setup_department_layer(self, shape_node, context, shot_root_path):
         """
