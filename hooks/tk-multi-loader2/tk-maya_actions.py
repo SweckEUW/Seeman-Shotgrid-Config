@@ -21,6 +21,16 @@ class MayaActions(HookBaseClass):
                 {"name": "reference", "params": None, "caption": "Create Reference", "description": "References the item."}
             )
 
+        if "load_into_stage" in actions:
+            action_instances.append(
+                {
+                    "name": "load_into_stage",
+                    "params": None,
+                    "caption": "Load USD into Stage",
+                    "description": "Loads a USD file into the current Maya USD stage.",
+                }
+            )
+
         if "import" in actions:
             action_instances.append(
                 {"name": "import", "params": None, "caption": "Import into Scene", "description": "Imports the item."}
@@ -39,6 +49,9 @@ class MayaActions(HookBaseClass):
         if name == "reference":
             self._reference(path, sg_publish_data)
 
+        if name == "load_into_stage":
+            self._load_into_stage(path, sg_publish_data)
+
         if name == "import":
             self._import(path, sg_publish_data)
 
@@ -48,20 +61,13 @@ class MayaActions(HookBaseClass):
 
     def _reference(self, path, sg_publish_data):
         """
-        Intelligente Reference Funktion.
-        Entscheidet basierend auf Dateityp, was zu tun ist.
+        Erstellt eine klassische Maya-Referenz.
+        Bei USD wird bewusst KEIN Laden in die Stage durchgeführt.
         """
         if not os.path.exists(path):
             raise Exception("File not found on disk - '%s'" % path)
 
-        # 1. USD CHECK: Ist es eine USD Datei?
-        # Wenn ja, nutzen wir NICHT Maya Reference, sondern Proxy Shape (das ist der moderne Reference Workflow)
-        if path.lower().endswith((".usd", ".usda", ".usdc")):
-            self.parent.log_info("USD file detected during Reference action. Switching to Proxy Shape loader.")
-            self._create_usd_proxy_shape(path, sg_publish_data)
-            return
-
-        # 2. NAMESPACE CLEANUP
+        # 1. NAMESPACE CLEANUP
         # Erstelle Namespace aus Entity + Name
         raw_namespace = "%s_%s" % (
             sg_publish_data.get("entity", {}).get("name", "Asset"),
@@ -75,7 +81,7 @@ class MayaActions(HookBaseClass):
         # Doppelte Unterstriche entfernen (Kosmetik)
         namespace = re.sub(r'_{2,}', '_', namespace)
 
-        # 3. STANDARD MAYA REFERENCE (.ma, .mb, .abc)
+        # 2. STANDARD MAYA REFERENCE (.ma, .mb, .abc, .usd)
         cmds.file(
             path,
             reference=True,
@@ -85,6 +91,18 @@ class MayaActions(HookBaseClass):
             returnNewNodes=True,
             ignoreVersion=True,
         )
+
+    def _load_into_stage(self, path, sg_publish_data):
+        """
+        Lädt ausschließlich USD-Dateien in eine vorhandene Maya USD Stage.
+        """
+        if not os.path.exists(path):
+            raise Exception("File not found on disk - '%s'" % path)
+
+        if not path.lower().endswith((".usd", ".usda", ".usdc")):
+            raise Exception("Load into Stage is only supported for USD files - '%s'" % path)
+
+        self._create_usd_proxy_shape(path, sg_publish_data)
 
     def _create_usd_proxy_shape(self, path, sg_publish_data):
         """
@@ -124,7 +142,6 @@ class MayaActions(HookBaseClass):
         # Standard-Fallback, falls die Stage leer ist
         scope_path = "/Assets" 
         
-        # Wir fragen die Stage: "Wer ist dein Chef?" (Default Prim)
         # In deinem Fall ist das "sq010_sh010"
         default_prim = stage.GetDefaultPrim()
         
