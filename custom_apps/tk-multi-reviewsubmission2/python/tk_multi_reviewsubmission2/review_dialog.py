@@ -22,6 +22,7 @@
 
 import os
 import pathlib
+import shutil
 import tempfile
 
 try:
@@ -29,7 +30,7 @@ try:
 except ImportError:
     from PySide6 import QtWidgets
 
-from .create_slate import CreateSlate
+from .create_burnin import CreateBurnin
 from .submit_version import SubmitVersion
 
 
@@ -82,13 +83,12 @@ class ReviewDialog(QtWidgets.QDialog):
         self.review_file_path = review_file_template.apply_fields(self.file_fields)
 
         # Create a temporary directory for the JPG files
-        temp_dir = tempfile.mkdtemp()
-        self.render_file_path = os.path.join(temp_dir, "temporary.####.jpg")
+        self.temp_dir = tempfile.mkdtemp()
+        self.render_file_path = os.path.join(self.temp_dir, "temporary.####.jpg")
         if self.current_engine.name == "tk-houdini":
-            self.render_file_path = os.path.join(temp_dir, "temporary.$F4.jpg")
+            self.render_file_path = os.path.join(self.temp_dir, "temporary.$F4.jpg")
 
-        # Format temporary path for importing in Nuke
-        self.nuke_render_file_path = os.path.join(temp_dir, "temporary.####.jpg")
+        self.nuke_render_file_path = os.path.join(self.temp_dir, "temporary.####.jpg")
 
         #
         # --- DIALOG ---
@@ -159,9 +159,16 @@ class ReviewDialog(QtWidgets.QDialog):
         #
         # --- RESOLUTION ---
         #
+        # Read render resolution from DCC, fall back to 1920x1080
+        try:
+            _render_res = self.app.execute_hook_method("helper_hook", "get_render_resolution")
+            _default_width, _default_height = int(_render_res[0]), int(_render_res[1])
+        except Exception:
+            _default_width, _default_height = 1920, 1080
+
         # resolution sub-widgets x
         self.resolution_x = QtWidgets.QWidget()
-        self.resolution_x.default = 1920
+        self.resolution_x.default = _default_width
         resolution_x_layout = QtWidgets.QVBoxLayout()
         self.resolution_x_label = QtWidgets.QLabel("Width")
         self.resolution_x_line = QtWidgets.QDoubleSpinBox()
@@ -174,7 +181,7 @@ class ReviewDialog(QtWidgets.QDialog):
 
         # resolution sub-widgets y
         self.resolution_y = QtWidgets.QWidget()
-        self.resolution_y.default = 1080
+        self.resolution_y.default = _default_height
         resolution_y_layout = QtWidgets.QVBoxLayout()
         self.resolution_y_label = QtWidgets.QLabel("Height")
         self.resolution_y_line = QtWidgets.QDoubleSpinBox()
@@ -204,12 +211,14 @@ class ReviewDialog(QtWidgets.QDialog):
             group_layout.addWidget(self.beauty_pass_only)
         elif self.current_engine.name == "tk-maya":
             self.use_antialiasing = QtWidgets.QCheckBox("Anti-aliasing", self)
+            self.use_antialiasing.setChecked(True)
             self.show_ornaments = QtWidgets.QCheckBox("Show ornaments", self)
-            self.show_ornaments.setChecked(True)
             group_layout.addWidget(self.use_antialiasing)
             group_layout.addWidget(self.show_ornaments)
 
         self.use_motionblur = QtWidgets.QCheckBox("Motion Blur", self)
+        self.use_motionblur.setChecked(True)
+        
         group_layout.addWidget(self.use_motionblur)
 
         # save new version widget
@@ -217,9 +226,8 @@ class ReviewDialog(QtWidgets.QDialog):
         self.save_new_version_checkbox.setChecked(True)
 
         # publish to ShotGrid
-        self.publish_to_shotgrid_checkbox = QtWidgets.QCheckBox(
-            "Publish to ShotGrid", self
-        )
+        self.publish_to_shotgrid_checkbox = QtWidgets.QCheckBox("Publish to ShotGrid", self)
+        self.publish_to_shotgrid_checkbox.setChecked(True)
 
         # copy to path widget
         self.copy_path_button = QtWidgets.QPushButton("Copy Path to Clipboard")
@@ -269,108 +277,13 @@ class ReviewDialog(QtWidgets.QDialog):
 
         def run(progress):
             self.close_window()
-
-            # Validation of inputs
-            progress.set_progress(0, "Collecting render data")
-            input_settings = {}
-            engine_settings = {}
-
-            input_settings["render_file_path"] = self.render_file_path
-            input_settings["review_file_path"] = self.review_file_path
-            input_settings["frame_range"] = self.validate_frame_range()
-            input_settings["fps"] = self.validate_fps()
-            input_settings["resolution"] = self.validate_resolution()
-            input_settings["description"] = self.validate_description()
-            input_settings["version"] = self.file_fields.get("version")
-
-            if self.current_engine.name == "tk-houdini":
-                engine_settings["mplay"] = self.validate_mplay()
-                engine_settings["beauty_pass"] = self.validate_beauty()
-            elif self.current_engine.name == "tk-maya":
-                engine_settings["use_antialiasing"] = self.validate_antialiasing()
-                engine_settings["show_ornaments"] = self.validate_show_ornaments()
-            engine_settings["motion_blur"] = self.validate_motionblur()
-
-            input_settings["engine_settings"] = engine_settings
-
-            self.logger.debug("Using the following settings, %s" % input_settings)
-
-            # Render
-            progress.next_progress("Executing the render hook")
-            self.app.execute_hook_method(
-                key="render_media_hook",
-                method_name="render",
-                base_class=None,
-                **input_settings
-            )
-
-            # Slate
-            progress.next_progress("Rendering slate")
-
-            project_file = os.path.basename(
-                self.app.execute_hook_method(
-                    key="helper_hook",
-                    method_name="get_file_path",
-                )
-            ).lower()
+            QtWidgets.QApplication.processEvents()
             try:
-                slate = CreateSlate(self.app)
-                slate.run_slate(
-                    self.nuke_render_file_path,
-                    self.review_file_path,
-                    project_file,
-                    input_settings,
-                )
-            except Exception as err:
-                progress.finish()
-                QtWidgets.QMessageBox.question(
-                    self,
-                    "Error",
-                    "Something went wrong while rendering the slate:\n\n{}".format(err),
-                    QtWidgets.QMessageBox.Ok,
-                    QtWidgets.QMessageBox.Ok
-                )
-                return False
-
-            # Check if created slate
-            if not pathlib.Path(self.review_file_path).is_file():
-                self.logger.error('Something went wrong while creating the slate!')
-                progress.finish()
-                QtWidgets.QMessageBox.question(
-                    self,
-                    "Error",
-                    "Something went wrong while creating the slate! Please check if the app is configured properly and "
-                    "try again.",
-                    QtWidgets.QMessageBox.Ok,
-                    QtWidgets.QMessageBox.Ok
-                )
-                return False
-
-            # Publish
-            if publish_to_shotgrid:
-                progress.next_progress("Creating Shotgun Version and uploading movie")
-                SubmitVersion(
-                    self.app,
-                    self.review_file_path,
-                    self.validate_frame_range(),
-                    self.validate_description(),
-                ).submit_version()
-
-            # Save
-            if save_new_version:
-                progress.next_progress("Saving file")
-                new_file = self.file_fields
-                new_file["version"] += 1
-                self.app.execute_hook_method(
-                    key="helper_hook",
-                    method_name="save_file",
-                    path=self.work_file_template.apply_fields(new_file),
-                )
-
-            # Close window
-            progress.finish()
-            self.logger.info("Review successful")
-
+                return self._run_render(progress, publish_to_shotgrid, save_new_version)
+            finally:
+                shutil.rmtree(self.temp_dir, ignore_errors=True)
+                self.logger.debug("Deleted temp directory: %s" % self.temp_dir)
+                
         # Start progress bar
         progress = self.app.execute_hook_method(
             key="progress_hook",
@@ -389,6 +302,121 @@ class ReviewDialog(QtWidgets.QDialog):
                 QtWidgets.QMessageBox.Ok,
                 QtWidgets.QMessageBox.Ok
             )
+
+    def _run_render(self, progress, publish_to_shotgrid, save_new_version):
+        input_settings = {}
+        engine_settings = {}
+
+        progress.set_progress(0, "Collecting render data")
+        input_settings["render_file_path"] = self.render_file_path
+        input_settings["review_file_path"] = self.review_file_path
+        input_settings["frame_range"] = self.validate_frame_range()
+        input_settings["fps"] = self.validate_fps()
+        input_settings["resolution"] = self.validate_resolution()
+        input_settings["description"] = self.validate_description()
+        input_settings["version"] = self.file_fields.get("version")
+
+        if self.current_engine.name == "tk-houdini":
+            engine_settings["mplay"] = self.validate_mplay()
+            engine_settings["beauty_pass"] = self.validate_beauty()
+        elif self.current_engine.name == "tk-maya":
+            engine_settings["use_antialiasing"] = self.validate_antialiasing()
+            engine_settings["show_ornaments"] = self.validate_show_ornaments()
+        engine_settings["motion_blur"] = self.validate_motionblur()
+
+        input_settings["engine_settings"] = engine_settings
+        self.logger.debug("Using the following settings: %s" % input_settings)
+
+        # Render (writes JPG sequence to self.temp_dir)
+        progress.next_progress("Playblasting")
+
+        def on_playblast_progress(frame, total):
+            progress.set_progress(
+                progress.current_item,
+                "Playblasting: frame {} / {}".format(frame, total),
+                fraction=(float(frame) / float(total)) if total else 0.0,
+            )
+
+        input_settings["on_frame_progress"] = on_playblast_progress
+        self.app.execute_hook_method(
+            key="render_media_hook",
+            method_name="render",
+            base_class=None,
+            **input_settings
+        )
+
+        # Burn in via FFMPEG
+        progress.next_progress("Rendering burn in")
+        project_file = os.path.basename(
+            self.app.execute_hook_method(
+                key="helper_hook",
+                method_name="get_file_path",
+            )
+        ).lower()
+        try:
+            burnin = CreateBurnin(self.app)
+
+            def on_ffmpeg_progress(frame, total):
+                progress.set_progress(
+                    progress.current_item,
+                    "Encoding: frame {} / {}".format(frame, total),
+                    fraction=(float(frame) / float(total)) if total else 0.0,
+                )
+
+            burnin.run_burnin(
+                self.nuke_render_file_path,
+                self.review_file_path,
+                project_file,
+                input_settings,
+                on_ffmpeg_progress=on_ffmpeg_progress,
+            )
+        except Exception as err:
+            progress.finish()
+            QtWidgets.QMessageBox.question(
+                self,
+                "Error",
+                "Something went wrong while rendering the burn in:\n\n{}".format(err),
+                QtWidgets.QMessageBox.Ok,
+                QtWidgets.QMessageBox.Ok,
+            )
+            return False
+
+        if not pathlib.Path(self.review_file_path).is_file():
+            self.logger.error("Something went wrong while creating the burn in!")
+            progress.finish()
+            QtWidgets.QMessageBox.question(
+                self,
+                "Error",
+                "Something went wrong while creating the burn in! "
+                "Please check the configuration and try again.",
+                QtWidgets.QMessageBox.Ok,
+                QtWidgets.QMessageBox.Ok,
+            )
+            return False
+
+        # Publish to ShotGrid
+        if publish_to_shotgrid:
+            progress.next_progress("Creating ShotGrid Version and uploading movie")
+            SubmitVersion(
+                self.app,
+                self.review_file_path,
+                self.validate_frame_range(),
+                self.validate_description(),
+            ).submit_version()
+
+        # Save new version of the scene file
+        if save_new_version:
+            progress.next_progress("Saving file")
+            new_file = self.file_fields
+            new_file["version"] += 1
+            self.app.execute_hook_method(
+                key="helper_hook",
+                method_name="save_file",
+                path=self.work_file_template.apply_fields(new_file),
+            )
+
+        progress.finish()
+        self.logger.info("Review successful")
 
     def copy_path_to_clipboard(self):
         """

@@ -131,16 +131,16 @@ paths:
 
   # Review files
   shot_review_maya:
-    definition: "@shot_root/maya/previews/{name}/{Sequence}_{Shot}_{name}_sRGB_v{version}.mov"
+    definition: "@shot_root/playblasts/{name}/{Sequence}_{Shot}_v{version}.mov"
   shot_review_houdini:
-    definition: "@shot_root/houdini/previews/{name}/{Sequence}_{Shot}_{name}_sRGB_v{version}.mov"
+    definition: "@shot_root/houdini/previews/{name}/{Sequence}_{Shot}_v{version}.mov"
 
   ##########################################################################################
   # Asset pipeline
 
   # Review files
   asset_review_maya:
-    definition: "@asset_root/maya/previews/{name}/{Asset}_{Step}_{name}_sRGB_v{version}.mov"
+    definition: "@asset_root/playblasts/{name}/{Asset}_{Step}_{name}_sRGB_v{version}.mov"
   asset_review_houdini:
     definition: "@asset_root/houdini/previews/{name}/{Asset}_{Step}_{name}_sRGB_v{version}.mov"
 

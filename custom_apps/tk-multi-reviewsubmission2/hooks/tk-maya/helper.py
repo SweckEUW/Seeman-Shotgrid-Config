@@ -42,6 +42,15 @@ class Helper(HookBaseClass):
             "fps": mel.eval('currentTimeUnitToFPS'),
         }
 
+    def get_render_resolution(self):
+        """
+        Get the render resolution from Maya's defaultResolution node
+        """
+        return (
+            int(cmds.getAttr("defaultResolution.width")),
+            int(cmds.getAttr("defaultResolution.height")),
+        )
+
     def save_file(self, path):
         """
         Save the file, optionally with a new path

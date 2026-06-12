@@ -16,16 +16,20 @@
 
 
 # Maya
-path.linux.maya: "/usr/autodesk/maya{version}/bin/maya{version}"
+path.linux.maya: ""
 path.mac.maya: ""
 path.windows.maya: C:\Program Files\Autodesk\Maya{version}\bin\maya.exe
 
 # Nuke
-path.linux.nuke: "Nuke{version}"
+path.linux.nuke: ""
 path.mac.nuke: ""
 path.windows.nuke: C:\Program Files\Nuke15.1v5\Nuke15.1.exe
 
 # Houdini
-path.linux.houdini: /opt/hfs{version}/bin/houdinifx
+path.linux.houdini: ""
 path.mac.houdini: ""
 path.windows.houdini: C:\Program Files\Side Effects Software\Houdini {version}\bin\houdinifx.exe
+
+path.linux.ffmpeg: ""
+path.mac.ffmpeg: ""
+path.windows.ffmpeg: X:/Projekte/MedienprojektSeemann/Seacarus/00_pipeline/tools/ffmpeg/bin/ffmpeg.exe

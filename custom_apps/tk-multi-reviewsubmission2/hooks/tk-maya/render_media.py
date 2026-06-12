@@ -38,6 +38,7 @@ class RenderMedia(HookBaseClass):
             description,
             version,
             engine_settings,
+            on_frame_progress=None,
     ):
         """
         Render the media
@@ -47,8 +48,8 @@ class RenderMedia(HookBaseClass):
         :param int[] frame_range:       Frame range of the output movie
         :param int fps:                 FPS of the output movie
         :param int[] resolution:        Resolution of the output movie
-        :param str description:         Description to use in the slate for the output movie
-        :param int version:             Version number to use for the output movie slate and burn-in
+        :param str description:         Description to use in the burn in for the output movie
+        :param int version:             Version number to use for the output movie burn in
         :param dict engine_settings:    Engine specific settings to use for rendering
 
         :returns:               Location of the rendered media
@@ -78,7 +79,23 @@ class RenderMedia(HookBaseClass):
             "Writing playblast to: %s using (%s)" % (render_file_path, playblast_args)
         )
 
-        output_path = maya.cmds.playblast(**playblast_args)
+        job_id = None
+        if on_frame_progress:
+            total = int(frame_range[1]) - int(frame_range[0]) + 1
+            frame_counter = [0]
+
+            def _on_time_changed():
+                frame_counter[0] += 1
+                on_frame_progress(min(frame_counter[0], total), total)
+
+            job_id = maya.cmds.scriptJob(event=["timeChanged", _on_time_changed])
+
+        try:
+            output_path = maya.cmds.playblast(**playblast_args)
+        finally:
+            if job_id is not None:
+                maya.cmds.scriptJob(kill=job_id, force=True)
+
         self.logger.debug("Playblast maybe written to %s" % output_path)
 
         maya.mel.eval('setAttr "hardwareRenderingGlobals.motionBlurEnable" {};'.format(old_motion_blur))
@@ -145,8 +162,8 @@ class RenderMedia(HookBaseClass):
         :param int[] frame_range:       Frame range of the output movie
         :param int fps:                 FPS of the output movie
         :param int[] resolution:        Resolution of the output movie
-        :param str description:         Description to use in the slate for the output movie
-        :param int version:             Version number to use for the output movie slate and burn-in
+        :param str description:         Description to use in the burn in for the output movie
+        :param int version:             Version number to use for the output movie burn in
         :param dict engine_settings:    Engine specific settings to use for rendering
 
         :returns:               Playblast arguments

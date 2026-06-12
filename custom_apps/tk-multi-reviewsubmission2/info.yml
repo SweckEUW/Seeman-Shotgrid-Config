@@ -15,7 +15,7 @@ configuration:
     # --- STRINGS ---
     company_name:
         type: str
-        description: Specify the company name that should be on the slates
+        description: Specify the company name that should be on the burn ins
         default_value: "ShotGrid Review Submission"
     display_name:
         type: str
@@ -37,18 +37,27 @@ configuration:
         default_value: "sg_fps"
 
     # --- PATHS ---
-    nuke_path_linux:
+    ffmpeg_path_linux:
         type: str
-        description: Linux path to your Nuke installation for creating slates.
-    nuke_path_mac:
+        description: Linux path to the FFMPEG executable for encoding burn ins.
+        default_value: ""
+    ffmpeg_path_mac:
         type: str
-        description: Mac path to your Nuke installation for creating slates.
-    nuke_path_windows:
+        description: Mac path to the FFMPEG executable for encoding burn ins.
+        default_value: ""
+    ffmpeg_path_windows:
         type: str
-        description: Windows path to your Nuke installation for creating slates.
-    slate_logo:
+        description: Windows path to the FFMPEG executable for encoding burn ins.
+        default_value: ""
+    auto_update_playlist:
+        type: bool
+        description: >
+            When publishing to ShotGrid, automatically keep a "Latest Versions"
+            playlist up to date with the newest version per Shot/Asset.
+        default_value: false
+    burnin_logo:
         type: config_path
-        description: Relative app path to the logo displayed on the slate
+        description: Relative app path to the logo displayed on the burn in
         default_value: "icons/review_submit_logo.png"
 
     # --- TEMPLATES ---
@@ -72,7 +81,7 @@ configuration:
     progress_hook:
         type: hook
         description: Implements progress bar functions.
-        default_value: "{self}/progress.py:{self}/{engine_name}/progress.py"
+        default_value: "{self}/progress.py"
     render_media_hook:
         type: hook
         description: Implements how media get generated while this app is running.

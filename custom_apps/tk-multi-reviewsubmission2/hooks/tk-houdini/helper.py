@@ -32,6 +32,15 @@ class Helper(HookBaseClass):
             "fps": hou.hscriptExpression("$FPS"),
         }
 
+    def get_render_resolution(self):
+        """
+        Get the render resolution from Houdini's scene-level render globals
+        """
+        return (
+            int(hou.hscriptExpression("$RESX")),
+            int(hou.hscriptExpression("$RESY")),
+        )
+
     def save_file(self, path):
         """
         Save the file, optionally with a new path

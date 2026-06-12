@@ -9,14 +9,14 @@ Easily create and publish QuickTime preview renders (flipbooks/playblasts) from 
 
 Supported toolkits: `tk-houdini`, `tk-maya`
 
-_Requires Nuke for creating slates._
+_Requires Nuke for creating burn ins._
 
 |                             Houdini                              |                          Maya                           |
 |:----------------------------------------------------------------:|:-------------------------------------------------------:|
 | ![Houdini Dialog](resources/dialog_houdini.png "Houdini Dialog") | ![Maya Dialog](resources/dialog_maya.png "Maya Dialog") |
 
-![Slate](resources/slate.jpg "Slate")
-Slate
+![Burn in](resources/slate.jpg "Burn in")
+Burn in
 
 ![Review](resources/review.jpg "Review")
 Review
@@ -27,7 +27,7 @@ Review
 
 | Key              | Description                                                |
 |------------------|------------------------------------------------------------|
-| `company_name`   | Specify the company name that should be on the slates      |
+| `company_name`   | Specify the company name that should be on the burn ins    |
 | `display_name`   | Specify the name that should be used in menus and the main |
 | `cut_in_field`   | ShotGrid field name of cut in frame                        |
 | `cut_out_field`  | ShotGrid field name of cut out frame                       |
@@ -37,10 +37,10 @@ Review
 
 | Key                 | Description                                                 |
 |---------------------|-------------------------------------------------------------|
-| `nuke_path_linux`   | Linux path to your Nuke installation for creating slates.   |
-| `nuke_path_mac`     | Mac path to your Nuke installation for creating slates.     |
-| `nuke_path_windows` | Windows path to your Nuke installation for creating slates. |
-| `slate_logo`        | Relative app path to the logo displayed on the slate        |
+| `nuke_path_linux`   | Linux path to your Nuke installation for creating burn ins.   |
+| `nuke_path_mac`     | Mac path to your Nuke installation for creating burn ins.     |
+| `nuke_path_windows` | Windows path to your Nuke installation for creating burn ins. |
+| `burnin_logo`       | Relative app path to the logo displayed on the burn in        |
 
 ### Templates
 

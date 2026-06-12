@@ -44,8 +44,8 @@ class RenderMedia(HookBaseClass):
         :param int[] frame_range:       Frame range of the output movie
         :param int fps:                 FPS of the output movie
         :param int[] resolution:        Resolution of the output movie
-        :param str description:         Description to use in the slate for the output movie
-        :param int version:             Version number to use for the output movie slate and burn-in
+        :param str description:         Description to use in the burn in for the output movie
+        :param int version:             Version number to use for the output movie burn in
         :param dict engine_settings:    Engine specific settings to use for rendering
 
         :returns:               Location of the rendered media

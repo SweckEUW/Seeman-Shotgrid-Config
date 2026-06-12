@@ -26,6 +26,12 @@ class Helper(HookBaseClass):
         """
         pass
 
+    def get_render_resolution(self):
+        """
+        Get the render resolution from the DCC render settings
+        """
+        pass
+
     def save_file(self, path):
         """
         Save the file, optionally with a new path
