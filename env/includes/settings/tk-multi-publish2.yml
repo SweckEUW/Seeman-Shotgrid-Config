@@ -65,7 +65,7 @@ settings.tk-multi-publish2.houdini.asset_step:
     settings:
       Item: 
         "houdini.usd.layer": "usd_layer_publish" # Verweis auf Plugin Logik
-      Publish Template: houdini_asset_publish_usd
+      Publish Template: asset_usd_publish
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
 
@@ -107,10 +107,10 @@ settings.tk-multi-publish2.maya.asset_step:
     - name: Upload for review
       hook: "{self}/upload_version.py"
       settings: {}
-    - name: Publish Maya file to Flow Production Tracking
-      hook: "{self}/publish_file.py:{config}/tk-multi-publish2/maya/publishers/publish_session.py"
-      settings:
-        Publish Template: maya_asset_publish
+    # - name: Publish Maya file to Flow Production Tracking
+    #   hook: "{self}/publish_file.py:{config}/tk-multi-publish2/maya/publishers/publish_session.py"
+    #   settings:
+    #     Publish Template: maya_asset_publish
     # - name: Flow Production Tracking animation exporter
     #   hook: "{self}/publish_file.py:{config}/tk-multi-publish2/maya/publishers/publish_animation.py"
     #   settings:
@@ -155,6 +155,12 @@ settings.tk-multi-publish2.maya.shot_step:
     #   hook: "{self}/publish_file.py:{config}/tk-multi-publish2/maya/publishers/publish_model.py"
     #   settings:
     #     Publish Template: maya_shot_named_publish
+    # - name: Publish USD Animation
+    #   hook: "{config}/tk-multi-publish2/maya/publishers/publish_animation.py" # Pfad zu deinem neuen Hook
+    #   settings:
+    #     Item: 
+    #       "maya.session.animation": "usd_layer_publish" # Verweis auf Plugin Logik
+    #     Publish Template: shot_usd_publish
 
   help_url: *help_url
   location: "@apps.tk-multi-publish2.location"
