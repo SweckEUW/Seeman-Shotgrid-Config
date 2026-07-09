@@ -21,15 +21,15 @@ class MayaActions(HookBaseClass):
                 {"name": "reference", "params": None, "caption": "Create Reference", "description": "References the item."}
             )
 
-        if "load_into_stage" in actions:
-            action_instances.append(
-                {
-                    "name": "load_into_stage",
-                    "params": None,
-                    "caption": "Load USD into Stage",
-                    "description": "Loads a USD file into the current Maya USD stage.",
-                }
-            )
+        # if "load_into_stage" in actions:
+        #     action_instances.append(
+        #         {
+        #             "name": "load_into_stage",
+        #             "params": None,
+        #             "caption": "Load USD into Stage",
+        #             "description": "Loads a USD file into the current Maya USD stage.",
+        #         }
+        #     )
 
         if "import" in actions:
             action_instances.append(
