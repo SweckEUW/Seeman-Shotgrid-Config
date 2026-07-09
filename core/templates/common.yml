@@ -98,11 +98,15 @@ paths:
   asset_publish: 02_publish/assets/{Asset}/{Step}
   shot_publish: 02_publish/shots/{Sequence}/{Shot}/{Step}
 
+  # USD Publish Paths 
+  shot_usd_publish: "@shot_publish/{Sequence}_{Shot}_{Step}_v{version}.usd"
+  asset_usd_publish: "@asset_publish/{Asset}_{Step}_v{version}.usd"
+
   # Stage Paths
   asset_stage: 03_stage/assets/{Asset}
   shot_stage: 03_stage/shots/{Sequence}/{Shot}
   asset_stage_file: "@asset_stage/{Asset}_v{version}.usda"
-  shot_stage_file: "@shot_stage/{Sequence}/{Shot}.usda"
+  shot_stage_file: "@shot_stage/{Shot}.usda"
 
   # Render Paths
   asset_render_publish: 04_renders/assets/{Asset}/{Step}
